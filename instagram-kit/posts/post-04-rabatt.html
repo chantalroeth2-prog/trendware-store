@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1080px; font-family:'Inter',system-ui,sans-serif; overflow:hidden; }
+.slide { width:1080px; height:1080px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:80px; position:relative; background:linear-gradient(135deg,#7d4830 0%,#c87f5a 50%,#955838 100%); }
+.slide::before { content:''; position:absolute; top:0;left:0;right:0;bottom:0; background:radial-gradient(circle at 50% 50%,rgba(232,168,124,0.2) 0%,transparent 60%); }
+.content { position:relative; z-index:1; }
+.label { font-family:'Comfortaa',sans-serif; font-size:22px; font-weight:700; color:rgba(254,248,244,0.7); letter-spacing:6px; margin-bottom:30px; }
+.big { font-family:'Comfortaa',sans-serif; font-size:180px; font-weight:700; color:#fef8f4; line-height:1; margin-bottom:10px; }
+.big span { font-size:80px; vertical-align:top; }
+.desc { font-size:36px; color:rgba(254,248,244,0.9); font-weight:500; margin-bottom:50px; }
+.code-box { display:inline-block; background:rgba(254,248,244,0.95); border-radius:20px; padding:24px 50px; }
+.code { font-family:'Comfortaa',sans-serif; font-size:42px; font-weight:700; color:#7d4830; letter-spacing:4px; }
+.note { font-size:20px; color:rgba(254,248,244,0.55); margin-top:30px; }
+.bottom-line { position:absolute; bottom:0; left:0; right:0; height:4px; background:linear-gradient(90deg,#fef8f4,#e8a87c,transparent); z-index:2; }
+</style></head>
+<body>
+<div class="slide">
+  <div class="content">
+    <div class="label">WILLKOMMENSRABATT</div>
+    <div class="big">10<span>%</span></div>
+    <div class="desc">auf deine erste Bestellung</div>
+    <div class="code-box"><div class="code">WILLKOMMEN10</div></div>
+    <div class="note">Einfach an der Kasse eingeben &middot; Gültig auf alles</div>
+  </div>
+  <div class="bottom-line"></div>
+</div>
+</body></html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1080px; font-family:'Inter',system-ui,sans-serif; overflow:hidden; }
+.slide { width:1080px; height:1080px; display:flex; flex-direction:column; padding:70px 80px; background:#fef8f4; position:relative; }
+.title { font-family:'Comfortaa',sans-serif; font-size:50px; font-weight:700; color:#3d3530; margin-bottom:40px; }
+.grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px; flex:1; }
+.cat { border-radius:20px; padding:30px; display:flex; align-items:flex-end; }
+.cat-name { font-family:'Comfortaa',sans-serif; font-size:24px; font-weight:700; color:white; }
+.c1 { background:linear-gradient(135deg,#c87f5a,#955838); }
+.c2 { background:linear-gradient(135deg,#4a8a82,#2a5653); }
+.c3 { background:linear-gradient(135deg,#e8a87c,#c87f5a); }
+.c4 { background:linear-gradient(135deg,#653a28,#7d4830); }
+.c5 { background:linear-gradient(135deg,#377069,#4a8a82); }
+.c6 { background:linear-gradient(135deg,#b06a48,#e8a87c); }
+.footer { text-align:center; margin-top:30px; font-size:22px; }
+.footer strong { color:#c87f5a; }
+.footer span { color:rgba(61,53,48,0.45); }
+.bottom-line { position:absolute; bottom:0; left:0; right:0; height:4px; background:linear-gradient(90deg,#c87f5a,#4a8a82,transparent); }
+</style></head>
+<body>
+<div class="slide">
+  <div class="title">Unsere Kategorien</div>
+  <div class="grid">
+    <div class="cat c1"><div class="cat-name">Home &amp;<br>Living</div></div>
+    <div class="cat c2"><div class="cat-name">Lifestyle</div></div>
+    <div class="cat c3"><div class="cat-name">Küche</div></div>
+    <div class="cat c4"><div class="cat-name">Fitness</div></div>
+    <div class="cat c5"><div class="cat-name">Büro &amp;<br>Technik</div></div>
+    <div class="cat c6"><div class="cat-name">Haustiere</div></div>
+  </div>
+  <div class="footer"><strong>30+ Produkte</strong> <span>&middot; Link in Bio</span></div>
+  <div class="bottom-line"></div>
+</div>
+</body></html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1080px; font-family:'Inter',system-ui,sans-serif; overflow:hidden; }
+.slide { width:1080px; height:1080px; display:flex; flex-direction:column; padding:70px 80px; background:#fef8f4; position:relative; }
+.badge { display:inline-block; background:#c87f5a; color:white; font-family:'Comfortaa',sans-serif; font-size:18px; font-weight:700; padding:10px 24px; border-radius:30px; letter-spacing:2px; margin-bottom:30px; }
+.title { font-family:'Comfortaa',sans-serif; font-size:50px; font-weight:700; color:#3d3530; margin-bottom:10px; line-height:1.2; }
+.subtitle { font-size:22px; color:rgba(61,53,48,0.5); margin-bottom:40px; }
+.grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; flex:1; }
+.card { background:white; border-radius:20px; padding:36px 28px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; border:2px solid rgba(200,127,90,0.1); }
+.card-name { font-size:24px; font-weight:600; color:#3d3530; margin-bottom:14px; }
+.card-price { font-size:18px; color:rgba(61,53,48,0.4); text-decoration:line-through; display:inline; margin-right:10px; }
+.card-sale { font-size:32px; font-weight:700; color:#c87f5a; display:inline; }
+.card-cat { font-size:16px; color:rgba(61,53,48,0.4); margin-top:10px; }
+.footer { text-align:center; margin-top:30px; font-size:22px; color:#c87f5a; font-weight:600; }
+.bottom-line { position:absolute; bottom:0; left:0; right:0; height:4px; background:linear-gradient(90deg,#c87f5a,#4a8a82,transparent); }
+</style></head>
+<body>
+<div class="slide">
+  <div><span class="badge">BESTSELLER</span></div>
+  <div class="title">Die Lieblinge<br>unserer Kunden</div>
+  <div class="subtitle">Meistverkaufte Produkte dieser Woche</div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-name">LED Sternenhimmel-Projektor</div>
+      <div><span class="card-price">44,99 &euro;</span><span class="card-sale">31,99 &euro;</span></div>
+      <div class="card-cat">Home &amp; Living</div>
+    </div>
+    <div class="card">
+      <div class="card-name">Bambus Küchen-Organizer</div>
+      <div><span class="card-price">39,99 &euro;</span><span class="card-sale">27,99 &euro;</span></div>
+      <div class="card-cat">Küche</div>
+    </div>
+    <div class="card">
+      <div class="card-name">Fitness Widerstandsbänder Set</div>
+      <div><span class="card-sale">24,99 &euro;</span></div>
+      <div class="card-cat">Fitness</div>
+    </div>
+    <div class="card">
+      <div class="card-name">Magnetische Handyhalterung</div>
+      <div><span class="card-price">29,99 &euro;</span><span class="card-sale">19,99 &euro;</span></div>
+      <div class="card-cat">Technik</div>
+    </div>
+  </div>
+  <div class="footer">Link in Bio &rarr; trendware.store</div>
+  <div class="bottom-line"></div>
+</div>
+</body></html>

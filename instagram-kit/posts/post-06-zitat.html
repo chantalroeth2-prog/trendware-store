@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1080px; font-family:'Inter',system-ui,sans-serif; overflow:hidden; }
+.slide { width:1080px; height:1080px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:100px; position:relative; background:linear-gradient(135deg,#653a28 0%,#7d4830 50%,#152e2d 100%); }
+.slide::before { content:''; position:absolute; top:0;left:0;right:0;bottom:0; background:radial-gradient(circle at 50% 40%,rgba(200,127,90,0.12) 0%,transparent 60%); }
+.content { position:relative; z-index:1; }
+.quote-mark { font-family:'Comfortaa',sans-serif; font-size:100px; color:#e8a87c; line-height:1; margin-bottom:10px; }
+.quote { font-family:'Comfortaa',sans-serif; font-size:42px; font-weight:600; color:#fef8f4; line-height:1.5; margin-bottom:40px; }
+.accent-line { width:60px; height:4px; background:linear-gradient(90deg,#c87f5a,#e8a87c); border-radius:3px; margin:0 auto 30px; }
+.attribution { font-size:22px; color:rgba(254,248,244,0.4); }
+.bottom-line { position:absolute; bottom:0; left:0; right:0; height:4px; background:linear-gradient(90deg,#c87f5a,#4a8a82,transparent); z-index:2; }
+</style></head>
+<body>
+<div class="slide">
+  <div class="content">
+    <div class="quote-mark">&ldquo;</div>
+    <div class="quote">Dein Zuhause verdient Produkte, die genauso besonders sind wie du.</div>
+    <div class="accent-line"></div>
+    <div class="attribution">TrendWare &middot; trendware.store</div>
+  </div>
+  <div class="bottom-line"></div>
+</div>
+</body></html>

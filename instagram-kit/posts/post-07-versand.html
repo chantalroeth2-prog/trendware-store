@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1080px; font-family:'Inter',system-ui,sans-serif; overflow:hidden; }
+.slide { width:1080px; height:1080px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:80px; position:relative; background:linear-gradient(135deg,#152e2d 0%,#2a5653 40%,#4a8a82 100%); }
+.slide::before { content:''; position:absolute; top:0;left:0;right:0;bottom:0; background:radial-gradient(circle at 50% 60%,rgba(74,138,130,0.2) 0%,transparent 60%); }
+.content { position:relative; z-index:1; }
+.emoji { font-size:80px; margin-bottom:30px; }
+.title { font-family:'Comfortaa',sans-serif; font-size:48px; font-weight:700; color:#fef8f4; margin-bottom:20px; }
+.highlight { font-family:'Comfortaa',sans-serif; font-size:72px; font-weight:700; color:#e8a87c; margin-bottom:50px; }
+.badges { display:flex; gap:20px; }
+.badge { background:rgba(254,248,244,0.1); border:1px solid rgba(254,248,244,0.15); border-radius:16px; padding:24px 30px; text-align:center; min-width:180px; }
+.badge-label { font-size:18px; color:rgba(254,248,244,0.5); margin-bottom:8px; }
+.badge-value { font-family:'Comfortaa',sans-serif; font-size:24px; font-weight:700; color:#fef8f4; }
+.bottom-line { position:absolute; bottom:0; left:0; right:0; height:4px; background:linear-gradient(90deg,#e8a87c,#4a8a82,transparent); z-index:2; }
+</style></head>
+<body>
+<div class="slide">
+  <div class="content">
+    <div class="emoji">&#128230;</div>
+    <div class="title">Kostenloser Versand</div>
+    <div class="highlight">ab 39 &euro;</div>
+    <div class="badges">
+      <div class="badge">
+        <div class="badge-label">Lieferzeit</div>
+        <div class="badge-value">5-12 Tage</div>
+      </div>
+      <div class="badge">
+        <div class="badge-label">Rückgabe</div>
+        <div class="badge-value">30 Tage</div>
+      </div>
+      <div class="badge">
+        <div class="badge-label">Zahlung</div>
+        <div class="badge-value">PayPal &amp; Karte</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-line"></div>
+</div>
+</body></html>

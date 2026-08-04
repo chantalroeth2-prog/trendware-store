@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { width: 820px; height: 312px; overflow: hidden; font-family: 'Inter', system-ui, sans-serif; }
+.cover {
+  width: 820px;
+  height: 312px;
+  background: linear-gradient(135deg, #653a28 0%, #7d4830 40%, #152e2d 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+  position: relative;
+  overflow: hidden;
+}
+/* Warm gradient orbs */
+.cover::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(circle at 15% 75%, rgba(200,127,90,0.15) 0%, transparent 50%),
+    radial-gradient(circle at 85% 25%, rgba(74,138,130,0.12) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(232,168,124,0.08) 0%, transparent 60%);
+}
+/* Dot pattern */
+.cover::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.left {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+}
+.brand {
+  font-family: 'Comfortaa', sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  color: #fef8f4;
+  letter-spacing: -1px;
+  margin-bottom: 8px;
+}
+.brand span {
+  color: #e8a87c;
+}
+.tagline {
+  font-size: 20px;
+  color: rgba(254,248,244,0.8);
+  font-weight: 400;
+  margin-bottom: 24px;
+  letter-spacing: 0.5px;
+}
+.features {
+  display: flex;
+  gap: 24px;
+}
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(254,248,244,0.7);
+  font-size: 13px;
+  font-weight: 500;
+}
+.feature .icon {
+  width: 28px;
+  height: 28px;
+  background: rgba(232,168,124,0.15);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #e8a87c;
+  flex-shrink: 0;
+}
+.right {
+  position: relative;
+  z-index: 1;
+  text-align: right;
+}
+.url {
+  font-family: 'Comfortaa', sans-serif;
+  font-size: 16px;
+  color: rgba(254,248,244,0.45);
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+.cta-box {
+  background: rgba(200,127,90,0.15);
+  border: 1px solid rgba(232,168,124,0.3);
+  border-radius: 16px;
+  padding: 14px 20px;
+  margin-top: 12px;
+}
+.cta-code {
+  font-family: 'Comfortaa', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #e8a87c;
+  letter-spacing: 2px;
+}
+.cta-text {
+  font-size: 12px;
+  color: rgba(254,248,244,0.55);
+  margin-top: 4px;
+}
+/* Accent line */
+.accent-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #c87f5a 0%, #4a8a82 50%, transparent 100%);
+  z-index: 2;
+}
+</style>
+</head>
+<body>
+<div class="cover">
+  <div class="left">
+    <div class="brand">trend<span>ware</span></div>
+    <div class="tagline">Clever einkaufen. Clever leben.</div>
+    <div class="features">
+      <div class="feature">
+        <div class="icon">&#10003;</div>
+        <span>Handverlesen</span>
+      </div>
+      <div class="feature">
+        <div class="icon">&#9733;</div>
+        <span>Faire Preise</span>
+      </div>
+      <div class="feature">
+        <div class="icon">&#10148;</div>
+        <span>Gratis ab 39&euro;</span>
+      </div>
+      <div class="feature">
+        <div class="icon">&#8634;</div>
+        <span>30 Tage Retoure</span>
+      </div>
+    </div>
+  </div>
+  <div class="right">
+    <div class="url">trendware.store</div>
+    <div class="cta-box">
+      <div class="cta-code">WILLKOMMEN10</div>
+      <div class="cta-text">10% auf deine erste Bestellung</div>
+    </div>
+  </div>
+  <div class="accent-line"></div>
+</div>
+</body>
+</html>

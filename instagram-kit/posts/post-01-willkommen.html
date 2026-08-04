@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1080px; font-family:'Inter',system-ui,sans-serif; overflow:hidden; }
+.slide { width:1080px; height:1080px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:80px; position:relative; background:linear-gradient(135deg,#653a28 0%,#7d4830 40%,#152e2d 100%); }
+.slide::before { content:''; position:absolute; top:0;left:0;right:0;bottom:0; background:radial-gradient(circle at 20% 80%,rgba(200,127,90,0.15) 0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(74,138,130,0.12) 0%,transparent 45%); }
+.slide::after { content:''; position:absolute; top:0;left:0;right:0;bottom:0; background-image:radial-gradient(rgba(255,255,255,0.03) 1px,transparent 1px); background-size:24px 24px; }
+.content { position:relative; z-index:1; }
+.logo { font-family:'Comfortaa',sans-serif; font-size:80px; font-weight:700; color:#fef8f4; margin-bottom:40px; }
+.logo span { color:#e8a87c; }
+.accent-line { width:80px; height:4px; background:linear-gradient(90deg,#c87f5a,#e8a87c); border-radius:3px; margin:0 auto 40px; }
+.tagline { font-family:'Comfortaa',sans-serif; font-size:44px; color:rgba(254,248,244,0.95); font-weight:600; line-height:1.4; margin-bottom:30px; }
+.sub { font-size:26px; color:rgba(254,248,244,0.65); line-height:1.8; }
+.bottom-line { position:absolute; bottom:0; left:0; right:0; height:4px; background:linear-gradient(90deg,#c87f5a,#4a8a82,transparent); z-index:2; }
+</style></head>
+<body>
+<div class="slide">
+  <div class="content">
+    <div class="logo">trend<span>ware</span></div>
+    <div class="accent-line"></div>
+    <div class="tagline">Clever einkaufen.<br>Clever leben.</div>
+    <div class="sub">Handverlesene Gadgets für deinen Alltag<br>Kostenloser Versand ab 39 &euro;</div>
+  </div>
+  <div class="bottom-line"></div>
+</div>
+</body></html>

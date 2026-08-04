@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1080px; font-family:'Inter',system-ui,sans-serif; overflow:hidden; }
+.slide { width:1080px; height:1080px; display:flex; flex-direction:column; padding:70px 80px; background:#fef8f4; position:relative; }
+.top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; }
+.label { font-family:'Comfortaa',sans-serif; font-size:18px; font-weight:700; color:#c87f5a; letter-spacing:4px; }
+.discount { background:#c87f5a; color:white; font-family:'Comfortaa',sans-serif; font-size:22px; font-weight:700; padding:12px 24px; border-radius:14px; }
+.product-name { font-family:'Comfortaa',sans-serif; font-size:46px; font-weight:700; color:#3d3530; line-height:1.25; margin-bottom:10px; }
+.category { font-size:22px; color:#c87f5a; margin-bottom:40px; }
+.features { flex:1; }
+.feature { font-size:26px; color:#3d3530; margin-bottom:22px; padding-left:20px; position:relative; }
+.feature::before { content:''; position:absolute; left:0; top:12px; width:8px; height:8px; background:#c87f5a; border-radius:50%; }
+.price-row { margin-top:40px; display:flex; align-items:baseline; gap:16px; }
+.old-price { font-size:28px; color:rgba(61,53,48,0.35); text-decoration:line-through; }
+.new-price { font-family:'Comfortaa',sans-serif; font-size:52px; font-weight:700; color:#c87f5a; }
+.cta { font-size:22px; color:rgba(61,53,48,0.45); margin-top:12px; }
+.bottom-line { position:absolute; bottom:0; left:0; right:0; height:4px; background:linear-gradient(90deg,#c87f5a,#4a8a82,transparent); }
+</style></head>
+<body>
+<div class="slide">
+  <div class="top">
+    <div class="label">PRODUKT DER WOCHE</div>
+    <div class="discount">-29%</div>
+  </div>
+  <div class="product-name">LED Sternenhimmel-Projektor mit Fernbedienung</div>
+  <div class="category">Home &amp; Living</div>
+  <div class="features">
+    <div class="feature">16 Farbmodi &amp; Helligkeitsstufen</div>
+    <div class="feature">360&deg; Rotation</div>
+    <div class="feature">Timer-Funktion (1-6 Stunden)</div>
+    <div class="feature">USB &amp; Fernbedienung</div>
+    <div class="feature">Perfekt als Nachtlicht</div>
+  </div>
+  <div class="price-row">
+    <span class="old-price">44,99 &euro;</span>
+    <span class="new-price">31,99 &euro;</span>
+  </div>
+  <div class="cta">Jetzt entdecken &rarr; Link in Bio</div>
+  <div class="bottom-line"></div>
+</div>
+</body></html>
