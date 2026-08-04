@@ -53,9 +53,6 @@ export default function RootLayout({
       <body
         className={`${inter.className} ${comfortaa.variable} bg-white min-h-screen flex flex-col`}
       >
-        <div className="bg-amber-500 text-slate-950 text-center text-xs sm:text-sm font-bold py-2 px-4 shadow-sm z-50">
-          ⚠️ TESTBETRIEB – Bestellungen sind derzeit nicht möglich.
-        </div>
         <FlashSaleBanner />
         <Analytics />
         <CartProvider>
