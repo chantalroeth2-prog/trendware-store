@@ -148,9 +148,8 @@ export default function CheckoutPage() {
   );
 
   const paypalNotConfigured = (
-    <div className="bg-yellow-50 border border-yellow-200 text-yellow-700 text-sm rounded-lg p-4">
-      PayPal ist noch nicht konfiguriert. Bitte trage deine PayPal Client ID
-      in <code className="bg-yellow-100 px-1 rounded">.env.local</code> ein.
+    <div className="bg-amber-50 border border-amber-200 text-amber-800 text-sm rounded-lg p-4">
+      PayPal-Zahlung ist derzeit nicht verfügbar. Bitte wähle eine andere Zahlungsart.
     </div>
   );
 

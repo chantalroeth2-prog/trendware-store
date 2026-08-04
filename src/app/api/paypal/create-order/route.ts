@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
   try {
     if (!process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID) {
       return NextResponse.json(
-        { error: "PayPal ist noch nicht konfiguriert. Bitte Client ID in .env.local eintragen." },
+        { error: "PayPal-Zahlung ist derzeit nicht verfügbar." },
         { status: 500 }
       );
     }

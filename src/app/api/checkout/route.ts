@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           error:
-            "Stripe ist noch nicht konfiguriert. Bitte trage deine API-Keys in .env.local ein.",
+            "Zahlungsdienstleister ist derzeit nicht verfügbar. Bitte versuche es später erneut.",
         },
         { status: 500 }
       );
