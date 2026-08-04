@@ -21,10 +21,10 @@ export default function ProductCard({ product }: { product: Product }) {
   const hasSecondImage = product.images.length > 1;
 
   return (
-    <div className="group glass-card overflow-hidden transition-transform duration-300 hover:-translate-y-1 h-full flex flex-col">
+    <div className="group glass-card overflow-hidden transition-all duration-300 hover:-translate-y-1.5 h-full flex flex-col rounded-3xl border-brand-100/90 shadow-sm shadow-brand-900/5 hover:shadow-lg hover:shadow-brand-900/10 bg-white/80 backdrop-blur-md">
       {/* Image */}
       <Link href={`/product/${product.slug}`} className="block relative">
-        <div className="aspect-square overflow-hidden bg-gray-100 relative">
+        <div className="aspect-square overflow-hidden bg-surface-800/50 relative rounded-t-3xl">
           <Image
             src={product.images[0]}
             alt={product.title}
@@ -47,34 +47,34 @@ export default function ProductCard({ product }: { product: Product }) {
           )}
         </div>
         {product.badge && (
-          <span className="absolute top-3 left-3 bg-accent-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">
+          <span className="absolute top-3.5 left-3.5 bg-gradient-to-r from-accent-500 to-rose-300 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-xs backdrop-blur-xs">
             {product.badge}
           </span>
         )}
       </Link>
 
       {/* Info */}
-      <div className="p-4 flex-1 flex flex-col">
+      <div className="p-5 flex-1 flex flex-col">
         <Link href={`/product/${product.slug}`}>
-          <h3 className="text-sm font-semibold text-gray-800 line-clamp-2 hover:text-brand-600 transition-colors mb-1">
+          <h3 className="text-sm font-semibold text-stone-800 line-clamp-2 hover:text-brand-600 transition-colors mb-1 font-display">
             {product.title}
           </h3>
         </Link>
 
-        <p className="text-xs text-gray-500 mb-2 line-clamp-1">{product.shortDescription}</p>
+        <p className="text-xs text-stone-500 mb-2 line-clamp-1">{product.shortDescription}</p>
 
         {/* Price */}
-        <div className="flex items-center gap-2 mb-2">
-          <span className="text-lg font-bold text-gray-900">
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-lg font-bold text-stone-900">
             {product.price.toFixed(2)}&nbsp;&euro;
           </span>
           {product.compareAtPrice && (
-            <span className="text-sm text-gray-500 line-through">
+            <span className="text-sm text-stone-400 line-through">
               {product.compareAtPrice.toFixed(2)}&nbsp;&euro;
             </span>
           )}
           {product.compareAtPrice && (
-            <span className="text-xs font-semibold text-green-600 bg-green-50 px-1.5 py-0.5 rounded">
+            <span className="text-xs font-semibold text-accent-600 bg-rose-100/80 border border-rose-200/60 px-2 py-0.5 rounded-full">
               -{Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)}%
             </span>
           )}
@@ -84,17 +84,17 @@ export default function ProductCard({ product }: { product: Product }) {
         {product.stockCount <= 10 ? (
           <div className="flex items-center gap-1.5 mb-3">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500" />
             </span>
-            <span className="text-xs text-red-500">
+            <span className="text-xs text-rose-600 font-medium">
               Nur noch {product.stockCount} auf Lager
             </span>
           </div>
         ) : (
           <div className="flex items-center gap-1.5 mb-3">
-            <span className="inline-flex rounded-full h-2 w-2 bg-green-500" />
-            <span className="text-xs text-green-600">Auf Lager</span>
+            <span className="inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+            <span className="text-xs text-emerald-700 font-medium">Auf Lager</span>
           </div>
         )}
 
@@ -103,9 +103,9 @@ export default function ProductCard({ product }: { product: Product }) {
           <button
             onClick={handleAdd}
             disabled={added}
-            className={`w-full text-xs py-2.5 rounded-lg font-semibold transition-all ${
+            className={`w-full text-xs py-3 rounded-2xl font-semibold transition-all shadow-xs ${
               added
-                ? "bg-green-50 text-green-600 border border-green-200"
+                ? "bg-emerald-50 text-emerald-700 border border-emerald-200/80"
                 : "btn-primary"
             }`}
           >
@@ -127,7 +127,7 @@ export default function ProductCard({ product }: { product: Product }) {
           </button>
 
           {/* Delivery microcopy */}
-          <p className="text-[10px] text-gray-500 text-center mt-1.5">Lieferung in 3&ndash;7 Tagen</p>
+          <p className="text-[10px] text-stone-400 text-center mt-2">Lieferung in 3&ndash;7 Tagen</p>
         </div>
       </div>
     </div>

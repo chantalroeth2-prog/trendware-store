@@ -5,11 +5,11 @@ module.exports = {
     extend: {
       colors: {
         brand: {
-          50: "#fff9f5",
-          100: "#fef3ec",
-          200: "#fde2d7",
-          300: "#f9c6b8",
-          400: "#f29e8b",
+          50: "#fdfbf7",
+          100: "#f7f2ea",
+          200: "#eee3d3",
+          300: "#e2ceb8",
+          400: "#d5b597",
           500: "#d4a373",
           600: "#bc8a5f",
           700: "#a1714a",
@@ -17,16 +17,25 @@ module.exports = {
           900: "#4a2d1d",
         },
         accent: {
-          400: "#f2cc8f",
-          500: "#e07a5f",
-          600: "#d16244",
+          100: "#fceade",
+          200: "#f8d5c2",
+          300: "#f4ac8e",
+          400: "#ee876b",
+          500: "#e76f51",
+          600: "#d45638",
+        },
+        rose: {
+          50: "#fff8f6",
+          100: "#fceade",
+          200: "#f8d2c2",
+          300: "#f4a88f",
         },
         surface: {
           900: "#fdfbf7",
-          800: "#f8f3eb",
-          700: "#f2eada",
-          600: "#e7dbcb",
-          500: "#d8c7b4",
+          800: "#f7f2ea",
+          700: "#fceade",
+          600: "#f4ece1",
+          500: "#e8dac9",
         },
       },
       fontFamily: {
@@ -34,6 +43,8 @@ module.exports = {
       },
       borderRadius: {
         boutique: "24px",
+        "3xl": "24px",
+        "4xl": "32px",
       },
       keyframes: {
         "fade-in-up": {
