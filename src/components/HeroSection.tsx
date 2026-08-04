@@ -6,92 +6,86 @@ import ScrollReveal from "./ScrollReveal";
 
 export default function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-brand-900 via-brand-800 to-teal-900 text-white">
-      {/* Dot pattern overlay */}
-      <div className="absolute inset-0 dot-pattern opacity-40" />
+    <section className="relative overflow-hidden bg-gradient-to-b from-amber-50/80 via-rose-50/30 to-white text-stone-800">
+      {/* Soft warm background gradients */}
+      <div className="absolute top-10 left-10 w-96 h-96 bg-amber-200/30 rounded-full blur-3xl animate-float" />
+      <div className="absolute bottom-10 right-10 w-96 h-96 bg-rose-200/25 rounded-full blur-3xl animate-float-slow" />
 
-      {/* Animated gradient orbs */}
-      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-brand-500/20 rounded-full blur-3xl animate-float" />
-      <div className="absolute bottom-1/4 -right-32 w-80 h-80 bg-accent-500/15 rounded-full blur-3xl animate-float-slow" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-400/10 rounded-full blur-3xl animate-float-slower" />
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left: Text content */}
           <div className="opacity-0 animate-fade-in-up">
-            <p className="text-brand-200 text-sm font-semibold uppercase tracking-widest mb-4">
-              Handverlesene Qualität für Zuhause, Büro &amp; Fitness
-            </p>
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] mb-6">
-              Smarte Produkte, die deinen Alltag
+            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-amber-100/80 text-amber-800 mb-6 border border-amber-200/50">
+              ✨ Wohlfühlen &amp; Entspannen Zuhause
+            </span>
+
+            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.15] text-stone-900 mb-6">
+              Smarte Ästhetik für
               <br />
-              <span className="text-gradient">verbessern.</span>
+              dein <span className="text-gradient">Zuhause.</span>
             </h1>
-            <p className="text-lg text-white/70 mb-8 leading-relaxed max-w-xl opacity-0 animate-fade-in-up-delay">
-              Handverlesene Qualität für Zuhause, Büro &amp; Fitness
-              – versandkostenfrei ab 39&nbsp;&euro;.
+
+            <p className="text-base sm:text-lg text-stone-600 mb-8 leading-relaxed max-w-xl opacity-0 animate-fade-in-up-delay">
+              Handverlesene Stimmungslichter, beruhigende Aroma-Diffuser &amp; elegante Wohn-Gadgets für deinen persönlichen Rückzugsort.
             </p>
+
             <div className="flex flex-col sm:flex-row gap-4 opacity-0 animate-fade-in-up-delay-2">
-              <Link href="/shop" className="btn-accent text-base px-8 py-4">
-                Jetzt entdecken &rarr;
+              <Link href="/shop" className="btn-primary text-base px-8 py-4">
+                Kollektion entdecken &rarr;
               </Link>
               <Link
                 href="#bestseller"
-                className="inline-flex items-center justify-center rounded-lg border border-white/20 px-8 py-4 text-base font-semibold text-white transition-all hover:bg-white/10 hover:border-white/30"
+                className="btn-secondary text-base px-8 py-4"
               >
-                Unsere Bestseller
+                Beliebte Bestseller
               </Link>
             </div>
 
-            {/* Stats bar */}
-            <div className="mt-12 flex flex-wrap gap-8 md:gap-10 opacity-0 animate-fade-in-up-delay-2">
-              {[
-                { value: "30 Tage", label: "R\u00fcckgaberecht" },
-                { value: "Ab 39\u00a0\u20ac", label: "Kostenloser Versand" },
-                { value: "24h", label: "Support-Antwort" },
-              ].map((stat) => (
-                <div key={stat.label}>
-                  <div className="text-xl font-display font-bold text-white">{stat.value}</div>
-                  <div className="text-xs text-white/60">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-
-            {/* Trust strip */}
-            <div className="mt-6 flex flex-wrap gap-x-4 gap-y-1 text-xs text-white/70 opacity-0 animate-fade-in-up-delay-2">
-              <span>&#10003; 30 Tage Rückgabe</span>
-              <span>&#10003; Sichere Zahlung</span>
-              <span>&#10003; Schneller Versand</span>
+            {/* Trust highlights */}
+            <div className="mt-10 pt-8 border-t border-amber-200/50 flex flex-wrap gap-6 text-xs sm:text-sm font-medium text-stone-600 opacity-0 animate-fade-in-up-delay-2">
+              <div className="flex items-center gap-1.5">
+                <span className="text-amber-600">✓</span> 30 Tage Rückgaberecht
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-amber-600">✓</span> Kostenloser Versand ab 39&nbsp;€
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-amber-600">✓</span> Klimaneutraler Versand
+              </div>
             </div>
           </div>
 
           {/* Right: Featured product image */}
-          <ScrollReveal delay={300}>
+          <ScrollReveal delay={200}>
             <div className="relative">
-              {/* Mobile: simple image without floating badges */}
-              <div className="aspect-[3/2] lg:aspect-square rounded-boutique overflow-hidden border border-white/20 relative">
+              <div className="aspect-[4/3] sm:aspect-square rounded-3xl overflow-hidden border border-amber-100 shadow-xl shadow-amber-900/5 relative group">
                 <Image
-                  src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=700&h=700&fit=crop"
-                  alt="TrendWare Produkte"
+                  src="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=800&h=800&fit=crop&q=80"
+                  alt="Ambient Sunset Projektor-Lampe"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
                   priority
                 />
-              </div>
-              {/* Floating badge - desktop only */}
-              <div className="absolute -bottom-4 -left-4 glass-card px-5 py-3 animate-float-slow hidden lg:block">
-                <div className="flex items-center gap-2">
-                  <span className="text-green-400 text-lg">&#10003;</span>
-                  <div>
-                    <p className="text-sm font-bold text-gray-900">30 Tage</p>
-                    <p className="text-xs text-gray-500">Rückgaberecht</p>
-                  </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/40 via-transparent to-transparent opacity-60" />
+                <div className="absolute bottom-6 left-6 right-6 text-white">
+                  <span className="text-xs font-semibold uppercase tracking-wider bg-white/20 backdrop-blur-md px-3 py-1 rounded-full border border-white/30">
+                    Bestseller Highlight
+                  </span>
+                  <h3 className="text-xl font-display font-bold mt-2">Ambient Sunset Projektor</h3>
+                  <p className="text-xs text-white/80 mt-1">16 Mio. Farben &amp; sanfter Sonnenuntergangs-Effekt</p>
                 </div>
               </div>
-              {/* Floating badge 2 - desktop only */}
-              <div className="absolute -top-4 -right-4 glass-card px-4 py-2 animate-float hidden lg:block">
-                <p className="text-xs font-semibold text-green-600">&#10003; Kostenloser Versand</p>
+
+              {/* Floating Badge */}
+              <div className="absolute -bottom-4 -left-4 glass-card px-5 py-3 hidden sm:block">
+                <div className="flex items-center gap-2">
+                  <span className="text-amber-500 text-lg">★ 4.9</span>
+                  <div>
+                    <p className="text-xs font-bold text-stone-900">400+ Zufriedene Kunden</p>
+                    <p className="text-[10px] text-stone-500">Geprüfte Bewertungen</p>
+                  </div>
+                </div>
               </div>
             </div>
           </ScrollReveal>

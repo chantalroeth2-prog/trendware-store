@@ -7,49 +7,49 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-surface-900 text-gray-800 antialiased;
+    @apply bg-surface-900 text-stone-800 antialiased;
   }
 
-  /* Custom scrollbar */
+  /* Custom soft scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
   }
   ::-webkit-scrollbar-track {
-    @apply bg-gray-100;
+    @apply bg-amber-50/50;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-gray-300 rounded-full;
+    @apply bg-amber-200/80 rounded-full;
   }
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-brand-600;
+    @apply bg-brand-500;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-lg bg-brand-600 px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-brand-500 hover:shadow-lg hover:shadow-brand-600/25 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 focus:ring-offset-white;
+    @apply inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-brand-600 to-brand-500 px-7 py-3.5 text-sm font-semibold text-white shadow-md shadow-brand-500/20 transition-all hover:from-brand-500 hover:to-brand-600 hover:shadow-lg hover:shadow-brand-500/30 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2;
   }
   .btn-secondary {
-    @apply inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-700 transition-all hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 focus:ring-offset-white;
+    @apply inline-flex items-center justify-center rounded-2xl border border-amber-200/80 bg-white/90 backdrop-blur-md px-7 py-3.5 text-sm font-semibold text-stone-700 transition-all hover:bg-amber-50/50 hover:border-amber-300 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2;
   }
   .btn-accent {
-    @apply inline-flex items-center justify-center rounded-lg bg-accent-500 px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-accent-600 hover:shadow-lg hover:shadow-accent-500/25 focus:outline-none focus:ring-2 focus:ring-accent-400 focus:ring-offset-2 focus:ring-offset-white;
+    @apply inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-accent-500 to-brand-500 px-7 py-3.5 text-sm font-semibold text-white shadow-md shadow-accent-500/20 transition-all hover:opacity-95 hover:shadow-lg hover:shadow-accent-500/30 focus:outline-none focus:ring-2 focus:ring-accent-400 focus:ring-offset-2;
   }
 
-  /* Clean card */
+  /* Soft Dreamy Card */
   .glass-card {
-    @apply bg-white border border-gray-200 shadow-sm;
-    border-radius: 16px;
+    @apply bg-white/80 backdrop-blur-md border border-amber-100/80 shadow-sm shadow-amber-900/5;
+    border-radius: 20px;
     transition: all 0.3s ease;
   }
   .glass-card:hover {
-    @apply shadow-md border-gray-300;
+    @apply shadow-md shadow-amber-900/10 border-amber-200/80 -translate-y-0.5;
   }
 
   /* Scroll reveal */
   .scroll-reveal {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(24px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
   }
   .scroll-reveal.revealed {
@@ -70,35 +70,24 @@
   /* Swiper overrides for light theme */
   .swiper-button-prev,
   .swiper-button-next {
-    @apply w-10 h-10 rounded-full bg-white border border-gray-200 shadow-sm;
-    color: #c87f5a !important;
+    @apply w-10 h-10 rounded-full bg-white/90 backdrop-blur border border-amber-100 shadow-sm;
+    color: #bc8a5f !important;
   }
   .swiper-button-prev::after,
   .swiper-button-next::after {
     font-size: 14px !important;
     font-weight: 700;
   }
-  .swiper-button-prev:hover,
-  .swiper-button-next:hover {
-    @apply bg-gray-50 border-gray-300 shadow;
-  }
-
-  /* Swiper thumbs active state */
-  .swiper-slide-thumb-active div {
-    border-color: #c87f5a !important;
-  }
 }
 
 @layer utilities {
-  /* Gradient text utility */
   .text-gradient {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, #c87f5a, #e8a87c);
+    background-image: linear-gradient(135deg, #bc8a5f, #e07a5f);
   }
 
-  /* Dot pattern overlay */
   .dot-pattern {
-    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
-    background-size: 24px 24px;
+    background-image: radial-gradient(circle, rgba(188, 138, 95, 0.08) 1px, transparent 1px);
+    background-size: 28px 24px;
   }
 }
