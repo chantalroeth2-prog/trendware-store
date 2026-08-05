@@ -38,23 +38,23 @@ export default function Header() {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
-              <Link href="/" className="text-stone-600 hover:text-brand-700 transition-colors text-sm font-medium">
+              <Link href="/" className="text-stone-600 hover:text-brand-600 transition-colors text-sm font-medium">
                 Startseite
               </Link>
-              <Link href="/shop" className="text-stone-600 hover:text-brand-700 transition-colors text-sm font-medium">
-                Shop
+              <Link href="/shop" className="text-stone-600 hover:text-brand-600 transition-colors text-sm font-medium">
+                Alle Produkte
               </Link>
-              <Link href="/shop?category=home-living" className="text-stone-600 hover:text-brand-700 transition-colors text-sm font-medium">
-                Home &amp; Living
+              <Link href="/shop?category=stimmungslicht-ambiente" className="text-stone-600 hover:text-brand-600 transition-colors text-sm font-medium">
+                Stimmungslicht
               </Link>
-              <Link href="/shop?category=lifestyle-fitness" className="text-stone-600 hover:text-brand-700 transition-colors text-sm font-medium">
-                Lifestyle
+              <Link href="/shop?category=aroma-raumklima" className="text-stone-600 hover:text-brand-600 transition-colors text-sm font-medium">
+                Aroma &amp; Klima
               </Link>
-              <Link href="/blog" className="text-stone-600 hover:text-brand-700 transition-colors text-sm font-medium">
+              <Link href="/shop?category=aesthetische-ordnung" className="text-stone-600 hover:text-brand-600 transition-colors text-sm font-medium">
+                Ästhetische Ordnung
+              </Link>
+              <Link href="/blog" className="text-stone-600 hover:text-brand-600 transition-colors text-sm font-medium">
                 Blog
-              </Link>
-              <Link href="/kontakt" className="text-stone-600 hover:text-brand-700 transition-colors text-sm font-medium">
-                Kontakt
               </Link>
             </nav>
 

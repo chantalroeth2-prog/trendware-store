@@ -31,7 +31,7 @@ export default function AnnouncementBar() {
   const duplicated = [...messages, ...messages];
 
   return (
-    <div className="relative bg-brand-600 text-white text-xs py-2 overflow-hidden">
+    <div className="relative bg-gradient-to-r from-brand-600 via-brand-500 to-accent-500 text-white text-xs py-2 overflow-hidden shadow-xs">
       <div className="announcement-ticker">
         {duplicated.map((msg, i) => (
           <span key={i} className="mx-8 inline-flex items-center gap-1.5 whitespace-nowrap">
