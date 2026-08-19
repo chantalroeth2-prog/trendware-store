@@ -7,7 +7,6 @@ import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
 import Analytics from "@/components/Analytics";
 import ConversionBoosters from "@/components/ConversionBoosters";
-import FlashSaleBanner from "@/components/FlashSaleBanner";
 
 const inter = Inter({ subsets: ["latin"] });
 const comfortaa = Comfortaa({
@@ -53,7 +52,6 @@ export default function RootLayout({
       <body
         className={`${inter.className} ${comfortaa.variable} bg-white min-h-screen flex flex-col`}
       >
-        <FlashSaleBanner />
         <Analytics />
         <CartProvider>
           <Header />
