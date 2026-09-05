@@ -5,9 +5,6 @@ import { CartProvider } from "@/components/CartProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
-import Analytics from "@/components/Analytics";
-import ConversionBoosters from "@/components/ConversionBoosters";
-import FlashSaleBanner from "@/components/FlashSaleBanner";
 
 const inter = Inter({ subsets: ["latin"] });
 const comfortaa = Comfortaa({
@@ -22,20 +19,20 @@ export const metadata: Metadata = {
   },
   description:
     "Entdecke handverlesene Produkte für Zuhause, Büro, Fitness und mehr. Schneller Versand, 30 Tage Rückgaberecht.",
-  metadataBase: new URL("https://trendware.store"),
+  metadataBase: new URL("https://trendware7.store"),
   openGraph: {
     type: "website",
     locale: "de_DE",
     siteName: "TrendWare",
     title: "TrendWare – Smarte Produkte für deinen Alltag",
     description:
-      "Handverlesene Gadgets ab 12,99 € – für Zuhause, Büro, Fitness & Haustiere. Kostenloser Versand ab 39 €.",
+      "Ausgewählte Alltagshelfer für Zuhause, Ordnung und Ambiente.",
   },
   twitter: {
     card: "summary_large_image",
     title: "TrendWare – Smarte Produkte für deinen Alltag",
     description:
-      "Handverlesene Gadgets ab 12,99 € – für Zuhause, Büro, Fitness & Haustiere. Kostenloser Versand ab 39 €.",
+      "Ausgewählte Alltagshelfer für Zuhause, Ordnung und Ambiente.",
   },
   robots: {
     index: true,
@@ -53,14 +50,11 @@ export default function RootLayout({
       <body
         className={`${inter.className} ${comfortaa.variable} bg-white min-h-screen flex flex-col`}
       >
-        <FlashSaleBanner />
-        <Analytics />
         <CartProvider>
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
           <CartDrawer />
-          <ConversionBoosters />
         </CartProvider>
       </body>
     </html>

@@ -11,7 +11,7 @@ import {
 } from "@/lib/research/image-search";
 
 const OWNER_EMAIL = "kontakt.trendware@gmail.com";
-const FROM_EMAIL = "TrendWare Agent <noreply@trendware.store>";
+const FROM_EMAIL = process.env.EMAIL_FROM || "TrendWare Agent <onboarding@resend.dev>";
 
 // Pro Durchlauf max. Produkte suchen (SerpAPI-Budget: 100/Monat)
 // Jedes Produkt braucht 1-2 Credits (Shopping + optional Images)

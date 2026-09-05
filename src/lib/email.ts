@@ -1,7 +1,7 @@
 import { Resend } from "resend";
 
 const OWNER_EMAIL = "kontakt.trendware@gmail.com";
-const FROM_EMAIL = "TrendWare <noreply@trendware.store>";
+const FROM_EMAIL = process.env.EMAIL_FROM || "TrendWare <onboarding@resend.dev>";
 
 function getResend(): Resend {
   const key = process.env.RESEND_API_KEY;

@@ -8,7 +8,7 @@ import ViewToggle from "@/components/ViewToggle";
 import ScrollReveal from "@/components/ScrollReveal";
 import type { Product, Category } from "@/data/products";
 
-type SortOption = "popular" | "price-asc" | "price-desc" | "newest";
+type SortOption = "standard" | "price-asc" | "price-desc" | "newest";
 
 function ShopContent({
   products,
@@ -23,7 +23,7 @@ function ShopContent({
 
   const activeCategory = searchParams.get("category") || "alle";
   const searchQuery = searchParams.get("search") || "";
-  const sortBy = (searchParams.get("sort") as SortOption) || "popular";
+  const sortBy = (searchParams.get("sort") as SortOption) || "standard";
 
   // Client-side filtering from pre-fetched products
   const searchProducts = (query: string) => {
@@ -54,9 +54,8 @@ function ShopContent({
         .filter((p) => p.badge === "Neu")
         .concat(filteredProducts.filter((p) => p.badge !== "Neu"));
       break;
-    case "popular":
+    case "standard":
     default:
-      filteredProducts.sort((a, b) => b.soldCount - a.soldCount);
       break;
   }
 
@@ -73,7 +72,7 @@ function ShopContent({
 
   const handleSortChange = (newSort: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    if (newSort === "popular") {
+    if (newSort === "standard") {
       params.delete("sort");
     } else {
       params.set("sort", newSort);
@@ -85,9 +84,7 @@ function ShopContent({
     setView(v);
   }, []);
 
-  const bestsellers = [...products]
-    .sort((a, b) => b.soldCount - a.soldCount)
-    .slice(0, 4);
+  const recommendations = products.slice(0, 4);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -146,7 +143,7 @@ function ShopContent({
             onChange={(e) => handleSortChange(e.target.value)}
             className="bg-gray-100 border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-600 focus:outline-none focus:border-brand-500"
           >
-            <option value="popular">Beliebteste</option>
+            <option value="standard">Standard</option>
             <option value="price-asc">Preis: aufsteigend</option>
             <option value="price-desc">Preis: absteigend</option>
             <option value="newest">Neueste zuerst</option>
@@ -181,13 +178,13 @@ function ShopContent({
             Alle Produkte anzeigen
           </Link>
 
-          {/* Bestseller Fallback */}
+          {/* Neutral product fallback */}
           <div className="mt-12 text-left">
             <h2 className="font-display text-xl font-bold text-gray-900 mb-6 text-center">
-              Unsere Bestseller-Empfehlungen
+              Weitere Produktauswahl
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-              {bestsellers.map((product) => (
+              {recommendations.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>

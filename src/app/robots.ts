@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/", "/checkout/", "/cart"],
     },
-    sitemap: "https://trendware.store/sitemap.xml",
+    sitemap: "https://trendware7.store/sitemap.xml",
   };
 }

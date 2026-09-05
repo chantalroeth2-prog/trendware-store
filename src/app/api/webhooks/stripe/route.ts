@@ -29,6 +29,10 @@ export async function POST(request: NextRequest) {
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
 
+    if (!event.livemode || session.payment_status !== "paid" || process.env.PAYMENTS_LIVE_ENABLED !== "true") {
+      return NextResponse.json({ received: true, fulfillment: "skipped-non-live-or-unpaid" });
+    }
+
     try {
       // Retrieve line items for this session
       const lineItems = await getStripe().checkout.sessions.listLineItems(session.id);

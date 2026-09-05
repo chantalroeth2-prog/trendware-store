@@ -1,118 +1,19 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "Versand & Zahlung",
-};
-
+export const metadata: Metadata = { title: "Versand, Zahlung & Rückgabe" };
 export default function VersandPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <nav className="text-sm text-gray-500 mb-6">
-        <Link href="/" className="hover:text-brand-600">
-          Startseite
-        </Link>
-        <span className="mx-2">/</span>
-        <span className="text-gray-600">Versand &amp; Zahlung</span>
-      </nav>
-
-      <h1 className="font-display text-3xl font-bold text-gray-900 mb-8">
-        Versand &amp; Zahlung
-      </h1>
-
+      <nav className="text-sm text-gray-500 mb-6"><Link href="/">Startseite</Link><span className="mx-2">/</span>Versand &amp; Zahlung</nav>
+      <h1 className="font-display text-3xl font-bold text-gray-900 mb-8">Versand, Zahlung &amp; Rückgabe</h1>
       <div className="space-y-8 text-sm leading-relaxed text-gray-600">
-        <section>
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            Versandkosten
-          </h2>
-          <div className="overflow-x-auto">
-            <table className="min-w-full border border-gray-200 rounded-lg overflow-hidden">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">
-                    Land
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">
-                    Versandkosten
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">
-                    Kostenloser Versand ab
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                <tr>
-                  <td className="px-4 py-3">Deutschland</td>
-                  <td className="px-4 py-3">4,99&nbsp;&euro;</td>
-                  <td className="px-4 py-3">39,00&nbsp;&euro;</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-3">Österreich</td>
-                  <td className="px-4 py-3">6,99&nbsp;&euro;</td>
-                  <td className="px-4 py-3">49,00&nbsp;&euro;</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-3">Schweiz</td>
-                  <td className="px-4 py-3">9,99&nbsp;&euro;</td>
-                  <td className="px-4 py-3">59,00&nbsp;&euro;</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <p className="mt-3 text-xs text-gray-500">
-            Alle Preise inkl. MwSt. Die genauen Versandkosten werden dir vor
-            Abschluss der Bestellung angezeigt.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            Lieferzeiten
-          </h2>
-          <p>
-            Die Lieferzeit beträgt in der Regel <strong className="text-gray-700">3–7 Werktage</strong>{" "}
-            innerhalb Deutschlands. Für Österreich und die Schweiz kann die
-            Lieferung 5–10 Werktage in Anspruch nehmen.
-          </p>
-          <p className="mt-2">
-            Nach Versand erhältst du eine Bestätigung mit Tracking-Nummer per
-            E-Mail.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            Zahlungsarten
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {["Visa", "Mastercard", "PayPal"].map((method) => (
-              <div
-                key={method}
-                className="flex items-center justify-center p-4 border border-gray-200 rounded-lg bg-gray-100"
-              >
-                <span className="font-medium text-gray-600">{method}</span>
-              </div>
-            ))}
-          </div>
-          <p className="mt-3 text-xs text-gray-500">
-            Alle Zahlungen sind SSL-verschl&uuml;sselt und werden &uuml;ber die
-            gesicherten Systeme der jeweiligen Anbieter abgewickelt.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            Rückgabe &amp; Umtausch
-          </h2>
-          <p>
-            Du hast 30 Tage Zeit, Artikel zurückzugeben. Weitere Informationen
-            findest du in unserer{" "}
-            <Link href="/widerruf" className="text-brand-600 underline">
-              Widerrufsbelehrung
-            </Link>
-            .
-          </p>
-        </section>
+        <section><h2 className="text-lg font-semibold text-gray-900 mb-3">Versandgebiete und Versandkosten</h2><div className="overflow-x-auto"><table className="min-w-full border border-gray-200"><thead className="bg-gray-100"><tr><th className="p-3 text-left">Lieferland</th><th className="p-3 text-left">Standardversand je Bestellung</th></tr></thead><tbody><tr className="border-t"><td className="p-3">Deutschland</td><td className="p-3">4,99 €</td></tr><tr className="border-t"><td className="p-3">Frankreich</td><td className="p-3">6,99 €</td></tr></tbody></table></div><p className="mt-3"><strong>Es gibt keinen kostenlosen Hinversand.</strong> Die endgültigen Versandkosten werden vor Abgabe der zahlungspflichtigen Bestellung angezeigt.</p></section>
+        <section><h2 className="text-lg font-semibold text-gray-900 mb-3">Lieferzeit und Verfügbarkeit</h2><p>Es gilt ausschließlich die Lieferzeit, die beim konkret ausgewählten Produkt und unmittelbar vor der Zahlung angezeigt wird. Ein Produkt kann nur bestellt werden, wenn Lieferantenbestand, konkrete Variante und Versandoption aktuell bestätigt wurden. Teil- und Direktlieferungen durch den Lieferanten sind möglich, sofern dies für Sie zumutbar ist.</p></section>
+        <section><h2 className="text-lg font-semibold text-gray-900 mb-3">Sendungsverfolgung</h2><p>Wenn der gewählte Versanddienst eine Sendungsverfolgung anbietet, erhalten Sie die Tracking-Daten nach Übergabe an den Versanddienstleister per E-Mail.</p></section>
+        <section><h2 className="text-lg font-semibold text-gray-900 mb-3">Zahlungsarten</h2><p>Im Checkout werden nur tatsächlich aktivierte Zahlungsarten angezeigt. Vorgesehen sind Kartenzahlungen über Stripe und PayPal. Eine Zahlungsart ist erst verfügbar, wenn ihre Live-Anbindung erfolgreich geprüft wurde.</p></section>
+        <section><h2 className="text-lg font-semibold text-gray-900 mb-3">Rückgabe</h2><p>Trendware trägt die unmittelbaren Rücksendekosten. Rücksendeadresse: Trendware – Chantal Röth, Im Sennteich 16, 68189 Mannheim, Deutschland. Bitte fordern Sie vor der Rücksendung ein kostenfreies Rücksendeetikett an. Einzelheiten finden Sie in der <Link className="text-brand-600 underline" href="/widerruf">Widerrufsbelehrung</Link>.</p></section>
+        <p className="text-xs text-gray-500">Stand: September 2026</p>
       </div>
     </div>
   );

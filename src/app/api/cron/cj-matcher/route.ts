@@ -13,7 +13,7 @@ import {
 import type { Product } from "@/data/products";
 
 const OWNER_EMAIL = "kontakt.trendware@gmail.com";
-const FROM_EMAIL = "TrendWare Agent <noreply@trendware.store>";
+const FROM_EMAIL = process.env.EMAIL_FROM || "TrendWare Agent <onboarding@resend.dev>";
 
 // ---------------------------------------------------------------------------
 // Gemini: translate German product names to English search terms
@@ -193,7 +193,7 @@ function buildMatchEmail(
 ): string {
   const matchCards = matches
     .map((m) => {
-      const approveUrl = `${process.env.NEXT_PUBLIC_BASE_URL || "https://trendware.store"}/api/agent/approve-cj?token=${m.token}`;
+      const approveUrl = `${process.env.NEXT_PUBLIC_BASE_URL || "https://trendware7.store"}/api/agent/approve-cj?token=${m.token}`;
       const confidenceColor =
         m.confidence === "high"
           ? "#22c55e"

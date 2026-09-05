@@ -3,9 +3,10 @@ import { Resend } from "resend";
 import { callGroq } from "@/lib/groq";
 import { getAllProducts } from "@/data/product-store";
 import type { Product } from "@/data/products";
+import { hasVerifiedReviews, isProductOrderable } from "@/lib/product-compliance";
 
 const OWNER_EMAIL = "kontakt.trendware@gmail.com";
-const FROM_EMAIL = "TrendWare Agent <noreply@trendware.store>";
+const FROM_EMAIL = process.env.EMAIL_FROM || "TrendWare Agent <onboarding@resend.dev>";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -57,7 +58,7 @@ function productInfoBlock(product: Product): string {
     `Preis: ${product.price.toFixed(2)} EUR${product.compareAtPrice ? ` (statt ${product.compareAtPrice.toFixed(2)} EUR)` : ""}`,
     `Kategorie: ${product.category}`,
     `Features: ${product.features.join(", ")}`,
-    `Bewertung: ${product.rating}/5 (${product.reviewCount} Bewertungen)`,
+    ...(hasVerifiedReviews(product) ? [`Verifizierte Shop-Bewertung: ${product.rating}/5 (${product.reviewCount} Bewertungen), Quelle: ${product.reviewSource}`] : []),
     `Bild-URL: ${product.images[0] || "keine"}`,
   ].join("\n");
 }
@@ -79,7 +80,7 @@ async function generateSocialContent(
   const results: SocialContent[] = [];
 
   for (const product of products) {
-    const prompt = `Du bist ein Social-Media-Creator für den deutschen Online-Shop "TrendWare" (trendware.store) — Tagline: "dein smarter shop".
+    const prompt = `Du bist ein Social-Media-Creator für den deutschen Online-Shop "Trendware" (trendware7.store).
 TrendWare ist warm, persönlich und freundlich — wie ein guter Freund der dir Produkte empfiehlt. NICHT kalt oder corporate.
 Markenidentität: Logo-Font Comfortaa (rund, freundlich), "trend" in dunkelbraun (#3d3530), "ware" in warmem Sienna (#c87f5a), kleines Paket-Icon. Farben: Sienna #c87f5a (primär), Apricot #e8a87c (hell), Dunkelbraun #3d3530 (Text), warmes Creme #faf5ef (Hintergrund).
 Tonalität: Du-Form, warm, einladend, locker — wie eine Freundin die einen Tipp gibt.
@@ -304,7 +305,10 @@ export async function GET(request: Request) {
 
   try {
     // 1. Get all products
-    const products = await getAllProducts();
+    const products = (await getAllProducts()).filter(isProductOrderable);
+    if (!products.some(hasVerifiedReviews)) {
+      return NextResponse.json({ success: true, message: "Bewertungsautomation pausiert: keine verifizierten Shop-Bewertungen vorhanden." });
+    }
     if (products.length === 0) {
       return NextResponse.json({
         message: "Keine Produkte vorhanden.",

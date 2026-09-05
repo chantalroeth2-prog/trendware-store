@@ -88,12 +88,14 @@ export async function GET(request: Request) {
           images: suggestion.product.images,
           features: suggestion.product.features,
           deliveryDays: suggestion.product.deliveryDays,
-          rating: 4.5,
+          rating: 0,
           reviewCount: 0,
-          badge: "Neu",
-          inStock: true,
-          stockCount: 50,
+          reviewsVerified: false,
+          inStock: false,
+          stockCount: 0,
           soldCount: 0,
+          supplierAvailabilityVerified: false,
+          complianceVerified: false,
         };
 
         await addProduct(newProduct);
@@ -101,8 +103,8 @@ export async function GET(request: Request) {
 
         return htmlResponse(
           "Produkt hinzugefügt!",
-          `"${newProduct.title}" ist jetzt im Shop verfügbar.`,
-          "#22c55e"
+          `"${newProduct.title}" wurde als nicht bestellbarer Entwurf hinzugefügt. Freigabe erfolgt erst nach Supplier-, Varianten- und Compliance-Prüfung.`,
+          "#f59e0b"
         );
       }
 

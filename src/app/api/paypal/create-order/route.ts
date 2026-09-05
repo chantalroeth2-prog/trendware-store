@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getAllProducts } from "@/data/product-store";
+import { isProductOrderable } from "@/lib/product-compliance";
 
 /*
  * =============================================================
@@ -18,9 +20,6 @@ const PAYPAL_API_BASE =
   process.env.PAYPAL_MODE === "live"
     ? "https://api-m.paypal.com"
     : "https://api-m.sandbox.paypal.com";
-
-const SHIPPING_THRESHOLD = 39;
-const SHIPPING_COST = 4.99;
 
 async function getPayPalAccessToken(): Promise<string> {
   const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
@@ -51,14 +50,17 @@ async function getPayPalAccessToken(): Promise<string> {
 
 interface CheckoutItem {
   id: string;
-  title: string;
-  price: number;
   quantity: number;
 }
 
 export async function POST(request: NextRequest) {
   try {
-    if (!process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID) {
+    if (
+      process.env.PAYMENTS_LIVE_ENABLED !== "true" ||
+      process.env.PAYPAL_MODE !== "live" ||
+      !process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ||
+      !process.env.PAYPAL_CLIENT_SECRET
+    ) {
       return NextResponse.json(
         { error: "PayPal-Zahlung ist derzeit nicht verfügbar." },
         { status: 500 }
@@ -66,20 +68,24 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const items: CheckoutItem[] = body.items;
+    const requestedItems: CheckoutItem[] = body.items;
+    const country = body.country === "FR" ? "FR" : body.country === "DE" ? "DE" : null;
 
-    if (!items || items.length === 0) {
+    if (!requestedItems || requestedItems.length === 0 || !country) {
       return NextResponse.json(
         { error: "Keine Artikel im Warenkorb." },
         { status: 400 }
       );
     }
 
-    const subtotal = items.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0
-    );
-    const shipping = subtotal >= SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
+    const products = await getAllProducts();
+    const productById = new Map(products.map((product) => [product.id, product]));
+    const items = requestedItems.map((item) => ({ product: productById.get(item.id), quantity: item.quantity }));
+    if (items.some(({ product, quantity }) => !product || !isProductOrderable(product) || !Number.isInteger(quantity) || quantity < 1 || quantity > 10)) {
+      return NextResponse.json({ error: "Mindestens ein Produkt ist aktuell nicht bestellbar oder die Menge ist ungültig." }, { status: 409 });
+    }
+    const subtotal = items.reduce((sum, item) => sum + item.product!.price * item.quantity, 0);
+    const shipping = country === "FR" ? 6.99 : 4.99;
     const total = subtotal + shipping;
 
     const accessToken = await getPayPalAccessToken();
@@ -97,14 +103,14 @@ export async function POST(request: NextRequest) {
             },
           },
           items: items.map((item) => ({
-            name: item.title.substring(0, 127),
+            name: item.product!.title.substring(0, 127),
             unit_amount: {
               currency_code: "EUR",
-              value: item.price.toFixed(2),
+              value: item.product!.price.toFixed(2),
             },
             quantity: String(item.quantity),
             category: "PHYSICAL_GOODS",
-            custom_id: item.id,
+            custom_id: item.product!.id,
           })),
         },
       ],

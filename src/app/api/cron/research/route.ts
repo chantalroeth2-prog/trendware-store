@@ -13,7 +13,7 @@ import { setPendingSuggestions } from "@/lib/kv";
 import type { PendingSuggestion } from "@/types/research";
 
 const OWNER_EMAIL = "kontakt.trendware@gmail.com";
-const FROM_EMAIL = "TrendWare Agent <noreply@trendware.store>";
+const FROM_EMAIL = process.env.EMAIL_FROM || "TrendWare Agent <onboarding@resend.dev>";
 
 export async function GET(request: Request) {
   // Verify cron secret

@@ -6,12 +6,14 @@ import Image from "next/image";
 import { Product } from "@/data/products";
 import { useCart } from "./CartProvider";
 import { trackAddToCart } from "@/lib/tracking";
+import { isProductOrderable } from "@/lib/product-compliance";
 
 export default function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
 
   const handleAdd = () => {
+    if (!isProductOrderable(product)) return;
     addItem(product);
     trackAddToCart({ id: product.id, title: product.title, price: product.price, category: product.category });
     setAdded(true);
@@ -19,6 +21,7 @@ export default function ProductCard({ product }: { product: Product }) {
   };
 
   const hasSecondImage = product.images.length > 1;
+  const orderable = isProductOrderable(product);
 
   return (
     <div className="group glass-card overflow-hidden transition-all duration-300 hover:-translate-y-1.5 h-full flex flex-col rounded-3xl border-brand-100/90 shadow-sm shadow-brand-900/5 hover:shadow-lg hover:shadow-brand-900/10 bg-white/80 backdrop-blur-md">
@@ -46,7 +49,7 @@ export default function ProductCard({ product }: { product: Product }) {
             />
           )}
         </div>
-        {product.badge && (
+        {product.badge === "Neu" && (
           <span className="absolute top-3.5 left-3.5 bg-gradient-to-r from-accent-500 to-rose-300 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-xs backdrop-blur-xs">
             {product.badge}
           </span>
@@ -80,36 +83,29 @@ export default function ProductCard({ product }: { product: Product }) {
           )}
         </div>
 
-        {/* Stock status */}
-        {product.stockCount <= 10 ? (
-          <div className="flex items-center gap-1.5 mb-3">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500" />
-            </span>
-            <span className="text-xs text-rose-600 font-medium">
-              Nur noch {product.stockCount} auf Lager
-            </span>
-          </div>
-        ) : (
-          <div className="flex items-center gap-1.5 mb-3">
-            <span className="inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-            <span className="text-xs text-emerald-700 font-medium">Auf Lager</span>
-          </div>
-        )}
+        <div className="flex items-center gap-1.5 mb-3">
+          <span className={`inline-flex rounded-full h-2 w-2 ${orderable ? "bg-emerald-500" : "bg-amber-500"}`} />
+          <span className={`text-xs font-medium ${orderable ? "text-emerald-700" : "text-amber-700"}`}>
+            {orderable ? "Bestellbar" : "Derzeit nicht bestellbar"}
+          </span>
+        </div>
 
         {/* Add to Cart – pushed to bottom */}
         <div className="mt-auto">
           <button
             onClick={handleAdd}
-            disabled={added}
+            disabled={added || !orderable}
             className={`w-full text-xs py-3 rounded-2xl font-semibold transition-all shadow-xs ${
-              added
+              !orderable
+                ? "bg-stone-100 text-stone-500 border border-stone-200 cursor-not-allowed"
+                : added
                 ? "bg-emerald-50 text-emerald-700 border border-emerald-200/80"
                 : "btn-primary"
             }`}
           >
-            {added ? (
+            {!orderable ? (
+              "Derzeit nicht bestellbar"
+            ) : added ? (
               <span className="flex items-center justify-center gap-1.5">
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -127,7 +123,7 @@ export default function ProductCard({ product }: { product: Product }) {
           </button>
 
           {/* Delivery microcopy */}
-          <p className="text-[10px] text-stone-400 text-center mt-2">Lieferung in 3&ndash;7 Tagen</p>
+          <p className="text-[10px] text-stone-400 text-center mt-2">{product.deliveryDays}</p>
         </div>
       </div>
     </div>

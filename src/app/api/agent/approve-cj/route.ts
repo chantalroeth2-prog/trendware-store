@@ -43,9 +43,13 @@ export async function GET(request: Request) {
       );
     }
 
-    // 3. Apply: save cjProductId as product override
+    // 3. Save the exact CJ product and variant IDs. This does not publish the product.
     await setProductOverride(productSlug, {
-      cjProductId: cjVid,
+      cjProductId: match.cjPid,
+      cjVariantId: cjVid,
+      inStock: false,
+      supplierAvailabilityVerified: false,
+      complianceVerified: false,
     });
 
     // 4. Remove from pending
@@ -53,8 +57,8 @@ export async function GET(request: Request) {
 
     return htmlResponse(
       "CJ-Match bestätigt!",
-      `Produkt "${match.productTitle}" hat jetzt die CJ Product ID: ${cjVid}. Bestellungen können nun automatisch an CJ weitergeleitet werden.`,
-      "#22c55e"
+      `Produkt "${match.productTitle}" wurde mit CJ-Produkt ${match.cjPid} und Variante ${cjVid} verknüpft. Es bleibt bis zur Verfügbarkeits- und Compliance-Prüfung nicht bestellbar.`,
+      "#f59e0b"
     );
   } catch (err) {
     console.error("CJ Approve Fehler:", err);

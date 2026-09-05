@@ -8,6 +8,7 @@ import {
   getProductOverrides,
   getProductAdditions,
 } from "@/lib/kv";
+import { hasVerifiedReviews } from "@/lib/product-compliance";
 
 // Re-export types and categories for convenience
 export type { Product, Category };
@@ -68,7 +69,15 @@ export async function getTrendProducts(): Promise<Product[]> {
 
 export async function getBestsellers(): Promise<Product[]> {
   const all = await getAllProducts();
-  return [...all].sort((a, b) => b.soldCount - a.soldCount).slice(0, 8);
+  return all
+    .filter(hasVerifiedReviews)
+    .sort((a, b) => b.reviewCount - a.reviewCount)
+    .slice(0, 8);
+}
+
+export async function getFeaturedProducts(): Promise<Product[]> {
+  const all = await getAllProducts();
+  return all.slice(0, 8);
 }
 
 export async function getNewArrivals(): Promise<Product[]> {

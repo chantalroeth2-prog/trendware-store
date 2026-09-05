@@ -35,6 +35,9 @@ async function getPayPalAccessToken(): Promise<string> {
 
 export async function POST(request: NextRequest) {
   try {
+    if (process.env.PAYMENTS_LIVE_ENABLED !== "true" || process.env.PAYPAL_MODE !== "live") {
+      return NextResponse.json({ error: "PayPal-Livezahlung ist nicht freigeschaltet." }, { status: 503 });
+    }
     const body = await request.json();
     const { orderID } = body;
 

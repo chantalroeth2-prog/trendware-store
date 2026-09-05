@@ -1,10 +1,10 @@
 import { getAllProducts } from "@/data/product-store";
 import type { Product } from "@/data/products";
+import { isProductOrderable } from "@/lib/product-compliance";
 
-const BASE_URL = "https://trendware.store";
+const BASE_URL = "https://trendware7.store";
 const BRAND = "TrendWare";
 const SHIPPING_COST = 4.99;
-const FREE_SHIPPING_THRESHOLD = 39;
 
 const CATEGORY_MAP: Record<string, string> = {
   "home-living": "Wohnen & Einrichten",
@@ -43,10 +43,7 @@ function buildCsvRow(product: Product): string {
   const hersteller = BRAND;
   const bezeichnung = product.title;
   const preis = formatGermanPrice(product.price);
-  const versand =
-    product.price >= FREE_SHIPPING_THRESHOLD
-      ? "0,00"
-      : formatGermanPrice(SHIPPING_COST);
+  const versand = formatGermanPrice(SHIPPING_COST);
   const deepLink = `${BASE_URL}/product/${product.slug}`;
   const bild = product.images[0] || "";
   const kategorie =
@@ -70,7 +67,7 @@ export async function GET() {
 
     const header =
       "EAN;Hersteller;Bezeichnung;Preis;Versand;DeepLink;Bild;Kategorie";
-    const rows = products.map(buildCsvRow);
+    const rows = products.filter(isProductOrderable).map(buildCsvRow);
     const csv = [header, ...rows].join("\n");
 
     return new Response(csv, {

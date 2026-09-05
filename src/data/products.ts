@@ -3,6 +3,22 @@ export interface Product {
   price: number; compareAtPrice?: number; category: string; categorySlug: string; images: string[];
   features: string[]; deliveryDays: string; rating: number; reviewCount: number; badge?: string;
   inStock: boolean; stockCount: number; soldCount: number; cjProductId?: string;
+  cjVariantId?: string;
+  supplierAvailabilityVerified?: boolean;
+  supplierAvailabilityCheckedAt?: string;
+  complianceVerified?: boolean;
+  reviewsVerified?: boolean;
+  reviewSource?: string;
+  gpsr?: {
+    manufacturerName: string;
+    manufacturerPostalAddress: string;
+    manufacturerElectronicAddress: string;
+    euResponsiblePersonName?: string;
+    euResponsiblePersonPostalAddress?: string;
+    euResponsiblePersonElectronicAddress?: string;
+    productIdentifier: string;
+    safetyInformationDe: string[];
+  };
 }
 
 export interface Category { name: string; slug: string; icon: string; description: string; }
@@ -27,4 +43,8 @@ export const products: Product[] = [
   { id:"tw-008", slug:"3in1-magsafe-ladestation-faltbar", title:"Faltbare 3-in-1 Wireless-Ladestation", description:"Faltbare kabellose Ladestation für mehrere kompatible Geräte. Kompatibilität, Ladeleistung und Lieferumfang richten sich nach der konkret ausgewählten Lieferantenvariante.", shortDescription:"Faltbare Wireless-Ladestation für kompatible Geräte.", price:39.99, category:"Ästhetische Ordnung & Gadgets", categorySlug:"aesthetische-ordnung", images:["https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&h=800&fit=crop&q=80"], features:["Faltbares Design","Kabelloses Laden kompatibler Geräte","Konkrete Spezifikation gemäß Lieferantenvariante"], deliveryDays:"Lieferzeit wird im Bestellprozess angegeben", rating:0, reviewCount:0, inStock:true, stockCount:0, soldCount:0, cjProductId:"CJYD192984101AZ" },
 ];
 
-export function getBestsellers(): Product[] { return products.filter((p) => p.inStock); }
+export function getBestsellers(): Product[] {
+  return products.filter(
+    (p) => p.reviewsVerified === true && p.reviewCount > 0 && p.rating > 0
+  );
+}

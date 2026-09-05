@@ -3,17 +3,18 @@ import { Resend } from "resend";
 import { callGroq } from "@/lib/groq";
 import { getAllProducts } from "@/data/product-store";
 import type { Product } from "@/data/products";
+import { hasVerifiedReviews, isProductOrderable } from "@/lib/product-compliance";
 import { kv } from "@vercel/kv";
 
 const OWNER_EMAIL = "kontakt.trendware@gmail.com";
-const FROM_EMAIL = "TrendWare Agent <noreply@trendware.store>";
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://trendware.store";
+const FROM_EMAIL = process.env.EMAIL_FROM || "TrendWare Agent <onboarding@resend.dev>";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://trendware7.store";
 const GRAPH_API = "https://graph.facebook.com/v25.0";
 
 // Post-Typen für Content-Rotation (Instagram Best Practices 2025/2026)
 const POST_TYPES = [
   "product-showcase",     // Produktvorstellung mit Features + Preis
-  "social-proof",         // Bewertungen, Bestseller-Status, Beliebtheit
+  "social-proof",         // nur verifizierte Shop-Bewertungen
   "problem-solution",     // Problem beschreiben → Produkt als Lösung
   "lifestyle",            // Produkt im Alltag, Emotionen, Wohlfühlen
   "deal-highlight",       // Angebot, Rabatt, Preisvergleich im Fokus
@@ -115,17 +116,19 @@ Kurzbeschreibung: ${product.shortDescription}
 Preis: ${priceStr}${oldPrice ? ` (statt ${oldPrice}, -${discount}%)` : ""}
 Kategorie: ${product.category}
 Features: ${product.features.join(", ")}
-Bewertung: ${product.rating}/5 (${product.reviewCount} Bewertungen)
-Shop-URL: trendware.store`;
+${hasVerifiedReviews(product) ? `Verifizierte Shop-Bewertung: ${product.rating}/5 (${product.reviewCount} Bewertungen), Quelle: ${product.reviewSource}` : "Keine Bewertungs- oder Beliebtheitsaussagen verwenden."}
+Shop-URL: trendware7.store`;
 
   const typeInstructions: Record<PostType, string> = {
     "product-showcase": `POST-TYP: Produktvorstellung
 Zeige das Produkt mit seinen besten Features. Starte mit einem starken Hook (Frage oder mutiger Statement).
 Struktur: Hook → 3-4 Key-Features als kurze Zeilen → Preis → CTA.`,
 
-    "social-proof": `POST-TYP: Social Proof / Beliebtheit
-Betone die Bewertungen, dass es ein Bestseller ist, oder dass andere Kunden es lieben.
-Struktur: Hook ("Unser meistgefragtes Produkt..." / "X Bewertungen sprechen für sich") → Warum es beliebt ist → Preis → CTA.`,
+    "social-proof": hasVerifiedReviews(product)
+      ? `POST-TYP: Verifizierte Kundenbewertungen
+Verwende ausschließlich die oben genannte verifizierte Bewertungszahl und Quelle. Erfinde keine Namen, Zitate, Verkäufe oder Beliebtheitsaussagen.`
+      : `POST-TYP: Produktvorstellung
+Es liegen keine verifizierten Bewertungen vor. Verwende keinerlei Social Proof, Verkaufszahlen, Knappheit oder Beliebtheitsaussagen.`,
 
     "problem-solution": `POST-TYP: Problem → Lösung
 Starte mit einem alltäglichen Problem der Zielgruppe. Dann präsentiere das Produkt als elegante Lösung.
@@ -297,7 +300,7 @@ async function crossPostToFacebook(
     // Strip hashtags for Facebook (they don't perform well there)
     const fbCaption = caption
       .replace(/\n\n#[\s\S]*$/, "")
-      .replace(/Link in Bio/gi, `https://trendware.store/produkt/${product.slug}`);
+      .replace(/Link in Bio/gi, `https://trendware7.store/product/${product.slug}`);
 
     const res = await fetch(`${GRAPH_API}/${pageId}/feed`, {
       method: "POST",
@@ -399,7 +402,10 @@ export async function GET(request: Request) {
   }
 
   try {
-    const products = await getAllProducts();
+    const products = (await getAllProducts()).filter(isProductOrderable);
+    if (!products.some(hasVerifiedReviews)) {
+      return NextResponse.json({ success: true, message: "Instagram-Automation pausiert: keine verifizierten Shop-Bewertungen vorhanden." });
+    }
     if (products.length === 0) {
       return NextResponse.json({ message: "Keine Produkte vorhanden." });
     }
@@ -414,13 +420,15 @@ export async function GET(request: Request) {
       const aDiscount = a.compareAtPrice ? (1 - a.price / a.compareAtPrice) : 0;
       const bDiscount = b.compareAtPrice ? (1 - b.price / b.compareAtPrice) : 0;
       if (Math.abs(aDiscount - bDiscount) > 0.05) return bDiscount - aDiscount;
-      if (a.rating !== b.rating) return b.rating - a.rating;
       return Math.random() - 0.5;
     });
 
     // Pick 1 product per daily post (quality over quantity)
     const selected = pickRandomProducts(sorted, 1);
-    const postType = await getNextPostType();
+    let postType = await getNextPostType();
+    if (postType === "social-proof" && !selected.some(hasVerifiedReviews)) {
+      postType = "product-showcase";
+    }
 
     console.log(
       `Instagram Auto-Post [${postType}]: ${selected.length} Produkt:`,

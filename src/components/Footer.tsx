@@ -44,11 +44,9 @@ export default function Footer() {
             <h3 className="text-xs font-semibold text-brand-300 uppercase tracking-wider mb-4 font-display">Shop</h3>
             <ul className="space-y-2 text-sm">
               <li><Link href="/shop" className="hover:text-white transition-colors">Alle Produkte</Link></li>
-              <li><Link href="/shop?category=home-living" className="hover:text-white transition-colors">Home &amp; Living</Link></li>
-              <li><Link href="/shop?category=haustiere" className="hover:text-white transition-colors">Haustiere</Link></li>
-              <li><Link href="/shop?category=lifestyle-fitness" className="hover:text-white transition-colors">Lifestyle &amp; Fitness</Link></li>
-              <li><Link href="/shop?category=buero-organisation" className="hover:text-white transition-colors">Büro &amp; Organisation</Link></li>
-              <li><Link href="/shop?category=elektronik-zubehoer" className="hover:text-white transition-colors">Elektronik-Zubehör</Link></li>
+              <li><Link href="/shop?category=stimmungslicht-ambiente" className="hover:text-white transition-colors">Stimmungslicht &amp; Ambiente</Link></li>
+              <li><Link href="/shop?category=aroma-raumklima" className="hover:text-white transition-colors">Aroma &amp; Raumklima</Link></li>
+              <li><Link href="/shop?category=aesthetische-ordnung" className="hover:text-white transition-colors">Ästhetische Ordnung</Link></li>
             </ul>
           </div>
 
@@ -76,6 +74,7 @@ export default function Footer() {
               <li><Link href="/datenschutz" className="hover:text-white transition-colors">Datenschutz</Link></li>
               <li><Link href="/agb" className="hover:text-white transition-colors">AGB</Link></li>
               <li><Link href="/widerruf" className="hover:text-white transition-colors">Widerrufsbelehrung</Link></li>
+              <li><Link href="/produktsicherheit" className="hover:text-white transition-colors">Produktsicherheit &amp; GPSR</Link></li>
             </ul>
           </div>
         </div>
@@ -85,39 +84,7 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="text-xs text-stone-400 space-y-1">
               <p>&copy; {new Date().getFullYear()} TrendWare. Alle Rechte vorbehalten.</p>
-              <p>
-                Produkttexte und Kundenstimmen wurden mit KI-Unterstützung erstellt
-                und redaktionell geprüft.{" "}
-                <Link href="/datenschutz" className="underline hover:text-stone-300">Mehr erfahren</Link>
-              </p>
-            </div>
-            <div className="flex items-center space-x-3">
-              {/* Visa */}
-              <span className="px-3 py-1.5 border border-stone-800 rounded-xl bg-stone-800/40">
-                <svg className="h-5 w-auto" viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="48" height="32" rx="4" fill="#1A1F71" fillOpacity="0.3"/>
-                  <path d="M19.5 21H16.5L18.5 11H21.5L19.5 21Z" fill="#9CA3AF"/>
-                  <path d="M28 11L25.2 18L24.9 16.5L24 12C24 12 23.9 11 22.5 11H18L17.9 11.3C17.9 11.3 19.5 11.7 21.3 12.8L24 21H27.2L31.5 11H28Z" fill="#9CA3AF"/>
-                  <path d="M33 11L30 21H33L36 11H33Z" fill="#9CA3AF"/>
-                </svg>
-              </span>
-              {/* Mastercard */}
-              <span className="px-3 py-1.5 border border-stone-800 rounded-xl bg-stone-800/40">
-                <svg className="h-5 w-auto" viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="48" height="32" rx="4" fill="#1A1A2E" fillOpacity="0.3"/>
-                  <circle cx="20" cy="16" r="8" fill="#EB001B" fillOpacity="0.4"/>
-                  <circle cx="28" cy="16" r="8" fill="#F79E1B" fillOpacity="0.4"/>
-                  <path d="M24 10.5C25.8 12 27 14.1 27 16.5C27 18.9 25.8 21 24 22.5C22.2 21 21 18.9 21 16.5C21 14.1 22.2 12 24 10.5Z" fill="#FF5F00" fillOpacity="0.5"/>
-                </svg>
-              </span>
-              {/* PayPal */}
-              <span className="px-3 py-1.5 border border-stone-800 rounded-xl bg-stone-800/40">
-                <svg className="h-5 w-auto" viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="48" height="32" rx="4" fill="#003087" fillOpacity="0.2"/>
-                  <text x="10" y="20" fontFamily="Arial" fontSize="10" fontWeight="bold" fill="#9CA3AF">Pay</text>
-                  <text x="27" y="20" fontFamily="Arial" fontSize="10" fontWeight="bold" fill="#6B7280">Pal</text>
-                </svg>
-              </span>
+              <p>Shop-Sprache: Deutsch. Kundenservice per E-Mail.</p>
             </div>
           </div>
         </div>

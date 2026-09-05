@@ -14,9 +14,9 @@ import { useCart } from "@/components/CartProvider";
 import { trackViewContent, trackAddToCart } from "@/lib/tracking";
 import ProductSlider from "@/components/ProductSlider";
 import ScrollReveal from "@/components/ScrollReveal";
-import { testimonials } from "@/data/testimonials";
+import { isProductOrderable } from "@/lib/product-compliance";
 
-type Tab = "beschreibung" | "eigenschaften" | "bewertungen";
+type Tab = "beschreibung" | "eigenschaften" | "produktsicherheit";
 
 interface Props {
   product: Product | null;
@@ -32,7 +32,6 @@ export default function ProductDetailClient({ product, relatedProducts }: Props)
   const [showStickyATC, setShowStickyATC] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [viewers, setViewers] = useState(0);
   const ctaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -40,16 +39,6 @@ export default function ProductDetailClient({ product, relatedProducts }: Props)
       trackViewContent({ id: product.id, title: product.title, price: product.price, category: product.category });
     }
   }, [product]);
-
-  useEffect(() => {
-    // Simulated live viewer count
-    const base = 3 + Math.floor(Math.random() * 8);
-    setViewers(base);
-    const interval = setInterval(() => {
-      setViewers((v) => Math.max(2, v + (Math.random() > 0.5 ? 1 : -1)));
-    }, 8000 + Math.random() * 7000);
-    return () => clearInterval(interval);
-  }, []);
 
   useEffect(() => {
     if (!ctaRef.current) return;
@@ -62,7 +51,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Props)
   }, []);
 
   const handleAdd = () => {
-    if (!product) return;
+    if (!product || !isProductOrderable(product)) return;
     for (let i = 0; i < quantity; i++) {
       addItem(product);
     }
@@ -72,7 +61,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Props)
   };
 
   const handleBuyNow = () => {
-    if (!product) return;
+    if (!product || !isProductOrderable(product)) return;
     for (let i = 0; i < quantity; i++) {
       addItem(product);
     }
@@ -92,21 +81,16 @@ export default function ProductDetailClient({ product, relatedProducts }: Props)
   const tabs: { key: Tab; label: string }[] = [
     { key: "beschreibung", label: "Beschreibung" },
     { key: "eigenschaften", label: "Eigenschaften" },
-    { key: "bewertungen", label: "Kundenstimmen" },
+    { key: "produktsicherheit", label: "Produktsicherheit" },
   ];
 
-  // Get reviews for this product, fallback to all testimonials
-  const productReviews = testimonials.filter(
-    (t) => t.product && product.title.toLowerCase().includes(t.product.toLowerCase())
-  );
-  const displayReviews = productReviews.length > 0 ? productReviews : testimonials;
+  const orderable = isProductOrderable(product);
 
   const faqs = [
-    { q: "Wie schnell wird geliefert?", a: "Die Lieferzeit betr\u00e4gt 3\u20137 Werktage. Ab einem Bestellwert von 39\u00a0\u20ac ist der Versand kostenlos." },
-    { q: "Kann ich zur\u00fcckgeben?", a: "Ja, du hast 30 Tage R\u00fcckgaberecht \u2013 unkompliziert und ohne Wenn und Aber." },
-    { q: "Welche Zahlungsarten gibt es?", a: "Wir akzeptieren Visa, Mastercard und PayPal." },
-    { q: "Ist die Zahlung sicher?", a: "Ja, alle Zahlungen sind SSL-verschl\u00fcsselt und PCI-konform. Deine Daten sind jederzeit gesch\u00fctzt." },
-    { q: "Wie erreiche ich den Support?", a: "Per E-Mail an kontakt.trendware@gmail.com oder \u00fcber unser Kontaktformular. Wir antworten in der Regel innerhalb von 24 Stunden." },
+    { q: "Wie schnell wird geliefert?", a: `Die bestätigte Lieferzeit wird beim Produkt und vor der Zahlung angezeigt. Der aktuelle Status lautet: ${product.deliveryDays}.` },
+    { q: "Kann ich zurückgeben?", a: "Ja. Neben dem gesetzlichen Widerrufsrecht bieten wir eine freiwillige Rückgabe innerhalb von 30 Tagen. Wir übernehmen die unmittelbaren Rücksendekosten. Einzelheiten stehen in der Widerrufsbelehrung." },
+    { q: "Welche Zahlungsarten gibt es?", a: "Im Checkout werden ausschließlich die tatsächlich aktivierten Zahlungsarten angezeigt." },
+    { q: "Wie erreiche ich den Support?", a: "Per E-Mail an kontakt.trendware@gmail.com oder über unser Kontaktformular." },
   ];
 
   const totalPrice = product.price * quantity;
@@ -178,7 +162,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Props)
 
           {/* Product Info */}
           <div>
-            {product.badge && (
+            {product.badge === "Neu" && (
               <span className="inline-block bg-accent-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-3">
                 {product.badge}
               </span>
@@ -208,18 +192,9 @@ export default function ProductDetailClient({ product, relatedProducts }: Props)
               )}
             </div>
 
-            {/* Stock urgency */}
-            {product.stockCount <= 15 && (
-              <div className="flex items-center gap-2 mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500" />
-                </span>
-                <span className="text-sm text-red-500 font-medium">
-                  Nur noch {product.stockCount} auf Lager &ndash; bald ausverkauft!
-                </span>
-              </div>
-            )}
+            <div className={`mb-4 p-3 rounded-lg border text-sm font-medium ${orderable ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-amber-50 border-amber-200 text-amber-800"}`}>
+              {orderable ? "Dieses Produkt ist aktuell bestellbar." : "Dieses Produkt ist derzeit nicht bestellbar. Lieferantenverfügbarkeit und Pflichtangaben werden noch geprüft."}
+            </div>
 
             {/* Short description */}
             <p className="text-gray-500 mb-6 leading-relaxed">{product.shortDescription}</p>
@@ -230,20 +205,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Props)
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0H6.375c-.621 0-1.125-.504-1.125-1.125V14.25m17.25 0V5.625A1.125 1.125 0 0021.75 4.5H2.25A1.125 1.125 0 001.125 5.625v8.625" />
               </svg>
               <span>Lieferzeit: <strong className="text-gray-700">{product.deliveryDays}</strong></span>
-              <span className="text-gray-400">|</span>
-              <span>Kostenloser Versand ab 39&nbsp;&euro;</span>
             </div>
-
-            {/* Live viewers */}
-            {viewers > 0 && (
-              <div className="flex items-center gap-2 mb-4 text-sm text-gray-500">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
-                </span>
-                <span><strong className="text-green-600">{viewers} Personen</strong> sehen sich das gerade an</span>
-              </div>
-            )}
 
             {/* Quantity Selector */}
             <div className="flex items-center gap-3 mb-4">
@@ -260,9 +222,9 @@ export default function ProductDetailClient({ product, relatedProducts }: Props)
                   {quantity}
                 </span>
                 <button
-                  onClick={() => setQuantity((q) => Math.min(product.stockCount, q + 1))}
+                  onClick={() => setQuantity((q) => Math.min(10, q + 1))}
                   className="px-3 py-2 text-gray-500 hover:text-gray-900 transition-colors"
-                  disabled={quantity >= product.stockCount}
+                  disabled={quantity >= 10 || !orderable}
                 >
                   +
                 </button>
@@ -278,14 +240,18 @@ export default function ProductDetailClient({ product, relatedProducts }: Props)
             <div ref={ctaRef} className="flex flex-col sm:flex-row gap-3 mb-6">
               <button
                 onClick={handleAdd}
-                disabled={added}
+                disabled={added || !orderable}
                 className={`flex-1 py-4 text-base font-semibold rounded-lg transition-all ${
-                  added
+                  !orderable
+                    ? "bg-stone-100 text-stone-500 border border-stone-200 cursor-not-allowed"
+                    : added
                     ? "bg-green-50 text-green-600 border border-green-200"
                     : "btn-primary"
                 }`}
               >
-                {added ? (
+                {!orderable ? (
+                  "Derzeit nicht bestellbar"
+                ) : added ? (
                   <span className="flex items-center justify-center gap-1.5">
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -296,7 +262,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Props)
                   "In den Warenkorb"
                 )}
               </button>
-              <button onClick={handleBuyNow} className="btn-accent flex-1 py-4 text-base">
+              <button onClick={handleBuyNow} disabled={!orderable} className="btn-accent flex-1 py-4 text-base disabled:opacity-50 disabled:cursor-not-allowed">
                 Jetzt kaufen
               </button>
             </div>
@@ -356,49 +322,24 @@ export default function ProductDetailClient({ product, relatedProducts }: Props)
               </ul>
             )}
 
-            {activeTab === "bewertungen" && (
-              <div className="space-y-6">
-                <div className="bg-brand-50 border border-brand-200 rounded-lg p-3 text-xs text-gray-500">
-                  Die folgenden Kundenstimmen basieren auf recherchierten Erfahrungsberichten
-                  und wurden redaktionell aufbereitet. Es handelt sich nicht um verifizierte K&auml;ufe
-                  &uuml;ber diesen Shop.
-                </div>
-
-                {/* Reviews from testimonials */}
-                <div className="space-y-4">
-                  {displayReviews.map((review) => (
-                    <div key={review.id} className="p-4 bg-gray-50 rounded-xl border border-gray-200">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center text-sm font-bold text-brand-600">
-                            {review.name.charAt(0)}
-                          </div>
-                          <div>
-                            <p className="text-sm font-semibold text-gray-900">{review.name}</p>
-                            <div className="flex items-center gap-2">
-                              <div className="flex gap-0.5">
-                                {[1, 2, 3, 4, 5].map((star) => (
-                                  <svg
-                                    key={star}
-                                    className={`w-3.5 h-3.5 ${star <= review.rating ? "text-accent-500" : "text-gray-300"}`}
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                  >
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                ))}
-                              </div>
-                              <span className="text-xs text-gray-500">{review.date}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <p className="text-sm text-gray-600 leading-relaxed">{review.text}</p>
-                    </div>
-                  ))}
-                </div>
-                {productReviews.length === 0 && (
-                  <p className="text-xs text-gray-500 italic">Allgemeine Kundenstimmen zu TrendWare-Produkten</p>
+            {activeTab === "produktsicherheit" && (
+              <div className="space-y-4 text-sm text-gray-600">
+                {product.gpsr ? (
+                  <>
+                    <p><strong>Hersteller:</strong> {product.gpsr.manufacturerName}</p>
+                    <p>{product.gpsr.manufacturerPostalAddress}<br />{product.gpsr.manufacturerElectronicAddress}</p>
+                    {product.gpsr.euResponsiblePersonName && (
+                      <p><strong>EU-Verantwortliche Person:</strong> {product.gpsr.euResponsiblePersonName}<br />{product.gpsr.euResponsiblePersonPostalAddress}<br />{product.gpsr.euResponsiblePersonElectronicAddress}</p>
+                    )}
+                    <p><strong>Produktkennung:</strong> {product.gpsr.productIdentifier}</p>
+                    <ul className="list-disc pl-5 space-y-1">
+                      {product.gpsr.safetyInformationDe.map((notice) => <li key={notice}>{notice}</li>)}
+                    </ul>
+                  </>
+                ) : (
+                  <p className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-amber-800">
+                    Hersteller-, Verantwortlichen- und Sicherheitsangaben werden noch geprüft. Bis zur vollständigen Hinterlegung bleibt dieses Produkt nicht bestellbar.
+                  </p>
                 )}
               </div>
             )}

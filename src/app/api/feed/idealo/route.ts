@@ -1,10 +1,10 @@
 import { getAllProducts } from "@/data/product-store";
+import { isProductOrderable } from "@/lib/product-compliance";
 import type { Product } from "@/data/products";
 
-const BASE_URL = "https://trendware.store";
+const BASE_URL = "https://trendware7.store";
 const BRAND = "TrendWare";
 const SHIPPING_COST = 4.99;
-const FREE_SHIPPING_THRESHOLD = 39;
 
 const CATEGORY_MAP: Record<string, string> = {
   "home-living": "Wohnen > Dekoration",
@@ -42,16 +42,13 @@ function buildCsvRow(product: Product): string {
   const titel = product.title;
   const beschreibung = product.description;
   const preis = formatGermanPrice(product.price);
-  const versandkosten =
-    product.price >= FREE_SHIPPING_THRESHOLD
-      ? "0,00"
-      : formatGermanPrice(SHIPPING_COST);
+  const versandkosten = formatGermanPrice(SHIPPING_COST);
   const deepLink = `${BASE_URL}/product/${product.slug}`;
   const bildUrl = product.images[0] || "";
   const kategorie =
     CATEGORY_MAP[product.categorySlug] || product.category;
   const hersteller = BRAND;
-  const verfuegbarkeit = product.inStock ? "Sofort lieferbar" : "Nicht verfügbar";
+  const verfuegbarkeit = isProductOrderable(product) ? "Lieferbar" : "Nicht verfügbar";
 
   return [
     escapeCsvField(ean),

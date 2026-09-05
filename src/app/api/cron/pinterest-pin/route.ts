@@ -3,10 +3,11 @@ import { Resend } from "resend";
 import { callGroq } from "@/lib/groq";
 import { getAllProducts } from "@/data/product-store";
 import type { Product } from "@/data/products";
+import { hasVerifiedReviews, isProductOrderable } from "@/lib/product-compliance";
 
 const OWNER_EMAIL = "kontakt.trendware@gmail.com";
-const FROM_EMAIL = "TrendWare Agent <noreply@trendware.store>";
-const BASE_URL = "https://trendware.store";
+const FROM_EMAIL = process.env.EMAIL_FROM || "TrendWare Agent <onboarding@resend.dev>";
+const BASE_URL = "https://trendware7.store";
 const PINTEREST_API_BASE = "https://api.pinterest.com/v5";
 
 // ---------------------------------------------------------------------------
@@ -70,7 +71,7 @@ async function generatePinContent(
   const results: PinContent[] = [];
 
   for (const product of products) {
-    const prompt = `Du bist ein Pinterest-SEO-Experte für den deutschen Online-Shop "TrendWare" (trendware.store).
+    const prompt = `Du bist ein Pinterest-SEO-Experte für den deutschen Online-Shop "TrendWare" (trendware7.store).
 Erstelle einen Pinterest-Pin für das folgende Produkt.
 
 Produktname: ${product.title}
@@ -78,7 +79,6 @@ Kurzbeschreibung: ${product.shortDescription}
 Preis: ${product.price.toFixed(2)} EUR${product.compareAtPrice ? ` (statt ${product.compareAtPrice.toFixed(2)} EUR)` : ""}
 Kategorie: ${product.category}
 Features: ${product.features.join(", ")}
-Bewertung: ${product.rating}/5 (${product.reviewCount} Bewertungen)
 
 Antworte NUR mit dem folgenden Format (keine Markdown-Codeblöcke):
 
@@ -342,7 +342,10 @@ export async function GET(request: Request) {
 
   try {
     // 1. Get all products
-    const products = await getAllProducts();
+    const products = (await getAllProducts()).filter(isProductOrderable);
+    if (!products.some(hasVerifiedReviews)) {
+      return NextResponse.json({ success: true, message: "Pinterest-Automation pausiert: keine verifizierten Shop-Bewertungen vorhanden." });
+    }
     if (products.length === 0) {
       return NextResponse.json({
         message: "Keine Produkte vorhanden.",

@@ -61,9 +61,7 @@ const HOOKS: Record<string, string[]> = {
 
 const ANGLES = [
   { name: "Problem-Lösung", template: (p: string) => `Kennst du das Problem? [Alltagsproblem]. ${p} macht es einfach besser. Probier's aus!` },
-  { name: "Social Proof", template: (p: string) => `Über 500 mal verkauft – ${p} ist euer Liebling. Schau mal warum!` },
-  { name: "Preis-Vergleich", template: (p: string) => `Gleiche Qualität, halber Preis – ${p} gibt's jetzt bei TrendWare. Dein smarter Shop.` },
-  { name: "FOMO/Urgency", template: (p: string) => `${p} – fast ausverkauft! Schnapp dir deins, bevor es weg ist.` },
+  { name: "Produktnutzen", template: (p: string) => `${p}: Zeige ausschließlich die belegten Funktionen im tatsächlichen Alltagseinsatz.` },
 ];
 
 function getHooks(categorySlug: string): string[] {
@@ -71,7 +69,7 @@ function getHooks(categorySlug: string): string[] {
 }
 
 function generateAdText(product: Product, hook: string, angle: typeof ANGLES[0]): string {
-  return `${hook}\n\n${angle.template(product.title)}\n\nAb ${product.price.toFixed(2)} € | Kostenloser Versand ab 39 €\ntrendware.store — dein smarter shop`;
+  return `${hook}\n\n${angle.template(product.title)}\n\nAb ${product.price.toFixed(2)} € | Versandkosten werden im Checkout angezeigt\ntrendware7.store`;
 }
 
 function generateTargeting(product: Product): string {
@@ -86,12 +84,9 @@ function generateTargeting(product: Product): string {
 }
 
 export function generateAdPackages(products: Product[], maxProducts: number = 3): AdPackage[] {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://trendware.store";
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://trendware7.store";
 
-  // Pick top products by soldCount
-  const topProducts = [...products]
-    .sort((a, b) => b.soldCount - a.soldCount)
-    .slice(0, maxProducts);
+  const topProducts = products.slice(0, maxProducts);
 
   return topProducts.map((product) => {
     const hooks = getHooks(product.categorySlug);

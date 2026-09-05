@@ -2,10 +2,10 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { getAllProducts } from "@/data/product-store";
 
-const BASE_URL = "https://trendware.store";
+const BASE_URL = "https://trendware7.store";
 const SITEMAP_URL = `${BASE_URL}/sitemap.xml`;
 const OWNER_EMAIL = "kontakt.trendware@gmail.com";
-const FROM_EMAIL = "TrendWare Agent <noreply@trendware.store>";
+const FROM_EMAIL = process.env.EMAIL_FROM || "TrendWare Agent <onboarding@resend.dev>";
 
 /* ── Helper: static page URLs that should be submitted ─────── */
 function getStaticUrls(): string[] {
@@ -51,7 +51,7 @@ async function pingIndexNow(
       method: "POST",
       headers: { "Content-Type": "application/json; charset=utf-8" },
       body: JSON.stringify({
-        host: "trendware.store",
+        host: "trendware7.store",
         key,
         keyLocation: `${BASE_URL}/${key}.txt`,
         urlList,

@@ -1,11 +1,11 @@
 import { getAllProducts } from "@/data/product-store";
+import { isProductOrderable } from "@/lib/product-compliance";
 import type { Product } from "@/data/product-store";
 
-const BASE_URL = "https://trendware.store";
+const BASE_URL = "https://trendware7.store";
 const BRAND = "TrendWare";
 const CURRENCY = "EUR";
 const SHIPPING_COST = "4.99";
-const FREE_SHIPPING_THRESHOLD = 39;
 
 const CATEGORY_MAP: Record<string, string> = {
   "home-living": "Haus & Garten > Wohneinrichtung",
@@ -32,15 +32,11 @@ function formatPrice(price: number): string {
 
 function buildItemXml(product: Product): string {
   const productUrl = `${BASE_URL}/product/${product.slug}`;
-  const availability = product.inStock ? "in_stock" : "out_of_stock";
+  const availability = isProductOrderable(product) ? "in_stock" : "out_of_stock";
   const googleCategory =
     CATEGORY_MAP[product.categorySlug] || "Sonstige";
 
-  // Determine shipping: free if price >= threshold, otherwise 4.99 EUR
-  const shippingPrice =
-    product.price >= FREE_SHIPPING_THRESHOLD
-      ? "0.00"
-      : SHIPPING_COST;
+  const shippingPrice = SHIPPING_COST;
 
   // Primary image
   const primaryImage = product.images[0] ?? "";

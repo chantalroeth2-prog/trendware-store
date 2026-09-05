@@ -2,11 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { addNewsletterSubscriber, setEmailSequenceState } from "@/lib/kv";
 
-const FROM_EMAIL = "TrendWare <noreply@trendware.store>";
+const FROM_EMAIL = process.env.EMAIL_FROM || "TrendWare <onboarding@resend.dev>";
 const OWNER_EMAIL = "kontakt.trendware@gmail.com";
 
 export async function POST(request: NextRequest) {
   try {
+    if (process.env.NEWSLETTER_ENABLED !== "true") {
+      return NextResponse.json({ error: "Newsletter-Anmeldung ist derzeit deaktiviert." }, { status: 503 });
+    }
     const { email } = await request.json();
 
     if (!email || typeof email !== "string" || !email.includes("@")) {
@@ -64,7 +67,7 @@ export async function POST(request: NextRequest) {
               Gib den Code einfach beim Checkout ein und spare sofort 10%.
             </p>
             <div style="text-align:center;margin:24px 0">
-              <a href="https://trendware.store/shop" style="display:inline-block;background:#c87f5a;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:600">
+              <a href="https://trendware7.store/shop" style="display:inline-block;background:#c87f5a;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:600">
                 Jetzt stöbern
               </a>
             </div>

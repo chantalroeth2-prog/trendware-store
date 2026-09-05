@@ -8,11 +8,11 @@ export const revalidate = 60;
 export const metadata: Metadata = {
   title: "Shop – Alle Produkte | TrendWare",
   description:
-    "Entdecke unser gesamtes Sortiment: Smarte Gadgets für Zuhause, Büro, Fitness, Küche & Haustiere. Ab 12,99 € – Kostenloser Versand ab 39 €.",
+    "Entdecke unsere ausgewählten Alltagshelfer für Zuhause, Ordnung und Ambiente.",
   openGraph: {
     title: "TrendWare Shop – Smarte Produkte für deinen Alltag",
     description:
-      "Handverlesene Gadgets ab 12,99 € – für Zuhause, Büro, Fitness & Haustiere. Kostenloser Versand ab 39 €.",
+      "Ausgewählte Alltagshelfer für Zuhause, Ordnung und Ambiente.",
     type: "website",
   },
 };

@@ -5,13 +5,8 @@ import Image from "next/image";
 import { useCart } from "./CartProvider";
 import { useEffect } from "react";
 
-const SHIPPING_THRESHOLD = 39;
-
 export default function CartDrawer() {
   const { items, removeItem, updateQuantity, total, itemCount, isDrawerOpen, closeDrawer } = useCart();
-
-  const remainingForFreeShipping = Math.max(0, SHIPPING_THRESHOLD - total);
-  const shippingProgress = Math.min(100, (total / SHIPPING_THRESHOLD) * 100);
 
   // Close on Escape
   useEffect(() => {
@@ -59,30 +54,7 @@ export default function CartDrawer() {
           </button>
         </div>
 
-        {/* Free shipping progress bar */}
-        {items.length > 0 && (
-          <div className="px-5 pt-4 pb-2 bg-brand-50/40 border-b border-brand-100/40">
-            {remainingForFreeShipping > 0 ? (
-              <p className="text-xs text-stone-600 mb-2 font-medium">
-                Noch <strong className="text-brand-600 font-semibold">{remainingForFreeShipping.toFixed(2).replace(".", ",")}&nbsp;&euro;</strong> bis zum kostenlosen Versand! 🚚
-              </p>
-            ) : (
-              <p className="text-xs text-emerald-700 mb-2 font-semibold flex items-center gap-1">
-                ✨ Kostenloser Versand freigeschaltet!
-              </p>
-            )}
-            <div className="w-full h-2.5 bg-stone-100 rounded-full overflow-hidden p-0.5 border border-brand-100/50">
-              <div
-                className={`h-full rounded-full transition-all duration-700 ease-out ${
-                  remainingForFreeShipping <= 0
-                    ? "bg-gradient-to-r from-emerald-500 to-teal-400"
-                    : "bg-gradient-to-r from-brand-500 via-brand-400 to-accent-500"
-                }`}
-                style={{ width: `${shippingProgress}%` }}
-              />
-            </div>
-          </div>
-        )}
+        {items.length > 0 && <div className="px-5 py-3 bg-brand-50/40 border-b border-brand-100/40 text-xs text-stone-600">Zuzüglich Versand ab 4,99&nbsp;&euro;. Der genaue Betrag wird an der Kasse angezeigt.</div>}
 
         {/* Items */}
         <div className="flex-1 overflow-y-auto p-5 space-y-3.5">

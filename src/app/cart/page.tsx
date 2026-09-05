@@ -4,15 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/components/CartProvider";
 
-const SHIPPING_THRESHOLD = 39;
-const SHIPPING_COST = 4.99;
-
 export default function CartPage() {
   const { items, removeItem, updateQuantity, total } = useCart();
-
-  const shippingCost = total >= SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
-  const grandTotal = total + shippingCost;
-  const remainingForFreeShipping = SHIPPING_THRESHOLD - total;
 
   if (items.length === 0) {
     return (
@@ -57,29 +50,6 @@ export default function CartPage() {
       <h1 className="font-display text-2xl md:text-3xl font-bold text-gray-900 mb-8">
         Warenkorb ({items.length} Artikel)
       </h1>
-
-      {/* Free shipping progress bar */}
-      <div className="bg-white border border-gray-200 rounded-xl p-4 mb-6">
-        {remainingForFreeShipping > 0 ? (
-          <p className="text-sm text-gray-600 mb-2 font-medium">
-            Noch <strong className="text-brand-600">{remainingForFreeShipping.toFixed(2).replace(".", ",")}&nbsp;&euro;</strong> bis zum kostenlosen Versand! 🚚
-          </p>
-        ) : (
-          <p className="text-sm text-green-600 mb-2 font-semibold">
-            ✅ Kostenloser Versand!
-          </p>
-        )}
-        <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
-          <div
-            className={`h-full rounded-full transition-all duration-700 ease-out ${
-              remainingForFreeShipping <= 0
-                ? "bg-green-500"
-                : "bg-gradient-to-r from-brand-500 to-brand-400"
-            }`}
-            style={{ width: `${Math.min(100, (total / SHIPPING_THRESHOLD) * 100)}%` }}
-          />
-        </div>
-      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Cart Items */}
@@ -183,17 +153,11 @@ export default function CartPage() {
               </div>
               <div className="flex justify-between text-gray-500">
                 <span>Versand</span>
-                <span>
-                  {shippingCost === 0 ? (
-                    <span className="text-green-600 font-medium">Kostenlos</span>
-                  ) : (
-                    `${shippingCost.toFixed(2)} \u20ac`
-                  )}
-                </span>
+                <span>ab 4,99&nbsp;&euro;</span>
               </div>
               <div className="border-t border-gray-200 pt-3 flex justify-between font-bold text-gray-900 text-base">
                 <span>Gesamt</span>
-                <span>{grandTotal.toFixed(2)}&nbsp;&euro;</span>
+                <span>ab {(total + 4.99).toFixed(2)}&nbsp;&euro;</span>
               </div>
               <p className="text-xs text-gray-500">inkl. MwSt.</p>
             </div>
@@ -202,9 +166,8 @@ export default function CartPage() {
               Sicher zur Kasse &rarr;
             </Link>
 
-            {/* Urgency copy */}
             <p className="text-xs text-gray-500 text-center mt-3">
-              Sichere dir deine Produkte &ndash; Lagerbestand begrenzt
+              Der genaue Versandbetrag wird nach Auswahl des Lieferlandes angezeigt.
             </p>
 
             <Link

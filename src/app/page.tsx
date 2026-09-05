@@ -2,19 +2,17 @@ import Link from "next/link";
 import HeroSection from "@/components/HeroSection";
 import ProductSlider from "@/components/ProductSlider";
 import BrandStory from "@/components/BrandStory";
-import TestimonialSlider from "@/components/TestimonialSlider";
 import ScrollReveal from "@/components/ScrollReveal";
-import NewsletterForm from "@/components/NewsletterForm";
-import { getBestsellers, getNewArrivals, getCategoryWithCount } from "@/data/product-store";
+import { getFeaturedProducts, getNewArrivals, getCategoryWithCount } from "@/data/product-store";
 
 function HomeJsonLd() {
   const org = {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "TrendWare",
-    url: "https://trendware.store",
-    logo: "https://trendware.store/logo.png",
-    description: "Handverlesene Gadgets für Zuhause, Büro, Fitness & Haustiere. Kostenloser Versand ab 39 €.",
+    url: "https://trendware7.store",
+    logo: "https://trendware7.store/logo.png",
+    description: "Ausgewählte Alltagshelfer für Zuhause, Ordnung und Ambiente.",
     contactPoint: {
       "@type": "ContactPoint",
       email: "kontakt.trendware@gmail.com",
@@ -28,10 +26,10 @@ function HomeJsonLd() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "TrendWare",
-    url: "https://trendware.store",
+    url: "https://trendware7.store",
     potentialAction: {
       "@type": "SearchAction",
-      target: "https://trendware.store/shop?q={search_term_string}",
+      target: "https://trendware7.store/shop?q={search_term_string}",
       "query-input": "required name=search_term_string",
     },
   };
@@ -48,7 +46,7 @@ function HomeJsonLd() {
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const bestsellers = await getBestsellers();
+  const featuredProducts = await getFeaturedProducts();
   const newArrivals = await getNewArrivals();
   const categoriesWithCount = await getCategoryWithCount();
 
@@ -58,13 +56,12 @@ export default async function HomePage() {
       {/* Hero */}
       <HeroSection />
 
-      {/* Bestseller Slider */}
-      <section id="bestseller" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <section id="produkte" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <ScrollReveal>
           <ProductSlider
-            products={bestsellers}
-            title="Unsere Bestseller"
-            subtitle="Unsere Empfehlungen f&uuml;r dich"
+            products={featuredProducts}
+            title="Ausgewählte Produkte"
+            subtitle="Bestellbarkeit und Lieferdaten werden je Produkt geprüft"
           />
         </ScrollReveal>
       </section>
@@ -119,13 +116,6 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Testimonials */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <ScrollReveal>
-          <TestimonialSlider />
-        </ScrollReveal>
-      </section>
-
       {/* Warum bei uns kaufen? */}
       <section className="bg-gray-50 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -144,8 +134,8 @@ export default async function HomePage() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0H6.375c-.621 0-1.125-.504-1.125-1.125V14.25m17.25 0V5.625A1.125 1.125 0 0021.75 4.5H2.25A1.125 1.125 0 001.125 5.625v8.625" />
                   </svg>
                 ),
-                title: "Versand in 1\u20132 Tagen",
-                text: "Lieferung in 3\u20137 Werktagen. Ab 39\u00a0\u20ac kostenlos.",
+                title: "Transparenter Versand",
+                text: "Versandkosten und verfügbare Lieferzeit werden vor der Bestellung angezeigt.",
               },
               {
                 icon: (
@@ -154,7 +144,7 @@ export default async function HomePage() {
                   </svg>
                 ),
                 title: "Sichere Zahlung",
-                text: "Verschl\u00fcsselte Bezahlung mit Visa, Mastercard und PayPal.",
+                text: "Zahlungen werden erst angeboten, wenn der jeweilige Zahlungsdienst aktiviert ist.",
               },
               {
                 icon: (
@@ -163,7 +153,7 @@ export default async function HomePage() {
                   </svg>
                 ),
                 title: "30 Tage R\u00fcckgabe",
-                text: "Nicht zufrieden? Einfach zur\u00fcckschicken. Ohne Wenn und Aber.",
+                text: "Zusätzlich zum gesetzlichen Widerrufsrecht bieten wir eine freiwillige Rückgabe; die Bedingungen findest du im Widerruf.",
               },
               {
                 icon: (
@@ -189,27 +179,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Newsletter CTA Section */}
-      <section className="relative overflow-hidden py-16">
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-50 to-amber-50" />
-        <div className="relative max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <ScrollReveal>
-            <h2 className="font-display text-2xl md:text-3xl font-bold text-gray-900 mb-3">
-              10% Rabatt sichern
-            </h2>
-            <p className="text-gray-500 mb-4">
-              Spare bei deiner ersten Bestellung mit dem Code:
-            </p>
-            <div className="inline-block bg-gray-100 border border-gray-300 rounded-xl px-6 py-3 mb-6">
-              <span className="font-mono text-xl font-bold text-brand-600 tracking-widest">WILLKOMMEN10</span>
-            </div>
-            <p className="text-sm text-gray-500 mb-6">
-              Melde dich f&uuml;r unseren Newsletter an und erhalte zus&auml;tzlich exklusive Angebote.
-            </p>
-            <NewsletterForm />
-          </ScrollReveal>
-        </div>
-      </section>
     </>
   );
 }

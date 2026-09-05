@@ -29,7 +29,7 @@ export default function AGBPage() {
             (1) Diese Allgemeinen Gesch&auml;ftsbedingungen (AGB) gelten f&uuml;r alle
             Bestellungen, die Verbraucher und Unternehmer (&bdquo;Kunde&ldquo;) &uuml;ber den
             Online-Shop von TrendWare, betrieben von Chantal R&ouml;th, Im Sennteich 16,
-            68199 Mannheim (&bdquo;Verk&auml;uferin&ldquo;), abschlie&szlig;en.
+            68189 Mannheim (&bdquo;Verk&auml;uferin&ldquo;), abschlie&szlig;en.
           </p>
           <p className="mt-2">
             (2) Verbraucher im Sinne dieser AGB ist jede nat&uuml;rliche Person, die
@@ -78,9 +78,9 @@ export default function AGBPage() {
             werden vor Abschluss der Bestellung gesondert ausgewiesen.
           </p>
           <p className="mt-2">
-            (2) Der Versand innerhalb Deutschlands ist ab einem Bestellwert
-            von 39,00&nbsp;&euro; kostenlos. Unterhalb dieses Bestellwerts fallen
-            Versandkosten in H&ouml;he von 4,99&nbsp;&euro; an.
+            (2) F&uuml;r jede Bestellung fallen Versandkosten an. Der Standardversand
+            kostet 4,99&nbsp;&euro; nach Deutschland und 6,99&nbsp;&euro; nach Frankreich.
+            Der endg&uuml;ltige Betrag wird vor Abgabe der Bestellung angezeigt.
           </p>
           <p className="mt-2">
             (3) Folgende Zahlungsarten stehen zur Verf&uuml;gung:
@@ -100,13 +100,12 @@ export default function AGBPage() {
           </h2>
           <p>
             (1) Die Lieferung erfolgt an die vom Kunden angegebene
-            Lieferadresse. Wir liefern nach Deutschland, &Ouml;sterreich und
-            in die Schweiz.
+            Lieferadresse. Wir liefern nach Deutschland und Frankreich.
           </p>
           <p className="mt-2">
-            (2) Die voraussichtliche Lieferzeit betr&auml;gt 3&ndash;7 Werktage nach
-            Zahlungseingang, sofern auf der Produktseite keine abweichende
-            Lieferzeit angegeben ist.
+            (2) Es gilt die beim konkreten Produkt und unmittelbar vor der
+            Zahlung angezeigte Lieferzeit. Nicht als bestellbar gekennzeichnete
+            Produkte k&ouml;nnen nicht bestellt werden.
           </p>
           <p className="mt-2">
             (3) Die Gefahr des zuf&auml;lligen Untergangs und der zuf&auml;lligen
@@ -174,19 +173,6 @@ export default function AGBPage() {
             &sect; 9 Streitbeilegung
           </h2>
           <p>
-            Die Europ&auml;ische Kommission stellt eine Plattform zur
-            Online-Streitbeilegung (OS) bereit:{" "}
-            <a
-              href="https://ec.europa.eu/consumers/odr"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-brand-600 underline"
-            >
-              ec.europa.eu/consumers/odr
-            </a>.
-            Unsere E-Mail-Adresse finden Sie im Impressum.
-          </p>
-          <p className="mt-2">
             Wir sind nicht bereit oder verpflichtet, an
             Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle
             teilzunehmen.
@@ -211,7 +197,7 @@ export default function AGBPage() {
           </p>
         </section>
 
-        <p className="text-xs text-gray-600 mt-8">Stand: Februar 2025</p>
+        <p className="text-xs text-gray-600 mt-8">Stand: September 2026</p>
       </div>
     </div>
   );

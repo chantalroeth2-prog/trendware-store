@@ -3,11 +3,9 @@
 import { useState, useEffect } from "react";
 
 const messages = [
-  "Kostenloser Versand ab 39 €",
-  "✨ 30 Tage Rückgaberecht",
-  "🔒 Sichere Zahlung mit Visa, Mastercard & PayPal",
-  "🚚 Schnelle Lieferung in 3–7 Werktagen",
-  "⭐ 4.6 / 5 Durchschnittsbewertung",
+  "30 Tage freiwilliges Rückgaberecht",
+  "Rücksendekosten übernehmen wir",
+  "Versandkosten werden vor der Bestellung angezeigt",
 ];
 
 export default function AnnouncementBar() {

@@ -6,6 +6,7 @@ import {
   type OrderEmailData,
 } from "./email";
 import { getAllProducts } from "@/data/product-store";
+import { isProductOrderable } from "@/lib/product-compliance";
 
 export interface FulfillmentInput {
   orderNumber: string;
@@ -37,13 +38,13 @@ export async function fulfillOrder(input: FulfillmentInput): Promise<void> {
       quantity: item.quantity,
       price,
       productId: item.productId,
-      cjProductId: product?.cjProductId,
+      cjProductId: product?.cjVariantId,
     };
 
     allItems.push(orderItem);
 
-    if (product?.cjProductId) {
-      cjProducts.push({ vid: product.cjProductId, quantity: item.quantity });
+    if (product && isProductOrderable(product) && product.cjVariantId) {
+      cjProducts.push({ vid: product.cjVariantId, quantity: item.quantity });
     } else {
       manualItems.push(orderItem);
     }

@@ -57,19 +57,19 @@ function BreadcrumbJsonLd({
         "@type": "ListItem",
         position: 1,
         name: "Startseite",
-        item: "https://trendware.store",
+        item: "https://trendware7.store",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Blog",
-        item: "https://trendware.store/blog",
+        item: "https://trendware7.store/blog",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: post.title,
-        item: `https://trendware.store/blog/${post.slug}`,
+        item: `https://trendware7.store/blog/${post.slug}`,
       },
     ],
   };
@@ -106,10 +106,10 @@ function ArticleJsonLd({
     publisher: {
       "@type": "Organization",
       name: "TrendWare",
-      url: "https://trendware.store",
+      url: "https://trendware7.store",
     },
     datePublished: post.publishedAt,
-    mainEntityOfPage: `https://trendware.store/blog/${post.slug}`,
+    mainEntityOfPage: `https://trendware7.store/blog/${post.slug}`,
   };
   return (
     <script

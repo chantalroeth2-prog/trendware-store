@@ -6,8 +6,8 @@ import { getNewsletterSubscribers } from "@/lib/kv";
 import { getBestsellers } from "@/data/product-store";
 import type { Product } from "@/data/product-store";
 
-const FROM_EMAIL = "TrendWare <noreply@trendware.store>";
-const SITE_URL = "https://trendware.store";
+const FROM_EMAIL = process.env.EMAIL_FROM || "TrendWare <onboarding@resend.dev>";
+const SITE_URL = "https://trendware7.store";
 
 function formatPrice(price: number): string {
   return price.toFixed(2).replace(".", ",") + " \u20ac";
@@ -94,7 +94,7 @@ function buildEmailHtml(products: Product[]): string {
     <div style="background:#fff;padding:32px;border-left:1px solid #e5e7eb;border-right:1px solid #e5e7eb">
       <h2 style="margin:0 0 8px;color:#111;font-size:20px">Hallo!</h2>
       <p style="color:#555;line-height:1.6;margin:0">
-        Hier sind unsere beliebtesten Produkte dieser Woche. Entdecke smarte Gadgets und clevere Alltagshelfer, die unsere Community begeistern.
+        Hier findest du Produkte, zu denen verifizierte Bewertungen aus unserem Shop vorliegen.
       </p>
     </div>
 

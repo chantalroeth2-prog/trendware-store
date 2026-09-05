@@ -35,10 +35,10 @@ export default function HeroSection() {
                 Kollektion entdecken &rarr;
               </Link>
               <Link
-                href="#bestseller"
+                href="#produkte"
                 className="btn-secondary text-base px-8 py-4"
               >
-                Beliebte Bestseller
+                Produktauswahl ansehen
               </Link>
             </div>
 
@@ -48,10 +48,10 @@ export default function HeroSection() {
                 <span className="text-accent-500 font-bold">✓</span> 30 Tage Rückgaberecht
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="text-accent-500 font-bold">✓</span> Kostenloser Versand ab 39&nbsp;€
+                <span className="text-accent-500 font-bold">✓</span> Rücksendekosten übernehmen wir
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="text-accent-500 font-bold">✓</span> Klimaneutraler Versand
+                <span className="text-accent-500 font-bold">✓</span> Bestellbarkeit wird je Produkt geprüft
               </div>
             </div>
           </div>
@@ -71,23 +71,13 @@ export default function HeroSection() {
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-900/40 via-stone-900/10 to-transparent opacity-70 group-hover:opacity-60 transition-opacity duration-300" />
                 <div className="absolute bottom-6 left-6 right-6 text-white">
                   <span className="text-xs font-semibold uppercase tracking-wider bg-white/25 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/40 shadow-xs">
-                    Bestseller Highlight
+                    Trendware Auswahl
                   </span>
                   <h3 className="text-xl font-display font-bold mt-2.5 drop-shadow-xs">Ambient Sunset Projektor</h3>
-                  <p className="text-xs text-stone-100/90 mt-1">16 Mio. Farben &amp; sanfter Sonnenuntergangs-Effekt</p>
+                  <p className="text-xs text-stone-100/90 mt-1">Produktdetails gemäß geprüfter Lieferantenvariante</p>
                 </div>
               </div>
 
-              {/* Floating Badge */}
-              <div className="absolute -bottom-4 -left-4 glass-card px-5 py-3.5 hidden sm:block shadow-lg border-brand-100 rounded-2xl">
-                <div className="flex items-center gap-2.5">
-                  <span className="text-accent-500 text-lg">★ 4.9</span>
-                  <div>
-                    <p className="text-xs font-bold text-stone-900">400+ Zufriedene Kunden</p>
-                    <p className="text-[10px] text-stone-500">Geprüfte Bewertungen</p>
-                  </div>
-                </div>
-              </div>
             </div>
           </ScrollReveal>
         </div>

@@ -7,8 +7,8 @@ import type { BlogPost } from "@/lib/kv";
 import type { Product } from "@/data/products";
 
 const OWNER_EMAIL = "kontakt.trendware@gmail.com";
-const FROM_EMAIL = "TrendWare Agent <noreply@trendware.store>";
-const SITE_URL = "https://trendware.store";
+const FROM_EMAIL = process.env.EMAIL_FROM || "TrendWare Agent <onboarding@resend.dev>";
+const SITE_URL = "https://trendware7.store";
 
 // ---------------------------------------------------------------------------
 // Slug helper
@@ -57,7 +57,7 @@ async function generateBlogPosts(
 
   const currentYear = new Date().getFullYear();
 
-  const prompt = `Du bist ein erfahrener SEO-Content-Autor für den deutschen Online-Shop "TrendWare" (trendware.store) — Tagline: "dein smarter shop".
+  const prompt = `Du bist ein erfahrener SEO-Content-Autor für den deutschen Online-Shop "Trendware" (trendware7.store).
 TrendWare ist warm, persönlich und freundlich — wie ein guter Freund der dir Produkte empfiehlt. NICHT kalt oder corporate.
 Markenidentität: Logo-Font Comfortaa (rund, freundlich), "trend" in dunkelbraun (#3d3530), "ware" in warmem Sienna (#c87f5a), kleines Paket-Icon. Farben: Sienna #c87f5a (primär), Apricot #e8a87c (hell), Dunkelbraun #3d3530 (Text), warmes Creme #faf5ef (Hintergrund).
 TrendWare verkauft smarte Gadgets und Alltagshelfer für Zuhause, Büro, Fitness, Haustiere und Elektronik.

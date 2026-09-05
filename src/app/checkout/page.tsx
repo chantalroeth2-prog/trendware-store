@@ -8,10 +8,8 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useCart } from "@/components/CartProvider";
 import { trackInitiateCheckout } from "@/lib/tracking";
 
-const SHIPPING_THRESHOLD = 39;
-const SHIPPING_COST = 4.99;
-
 type PaymentMethod = "stripe" | "paypal";
+type ShippingCountry = "DE" | "FR";
 
 export default function CheckoutPage() {
   const { items, total, clearCart } = useCart();
@@ -19,8 +17,9 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("stripe");
+  const [country, setCountry] = useState<ShippingCountry>("DE");
 
-  const shippingCost = total >= SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
+  const shippingCost = country === "FR" ? 6.99 : 4.99;
   const grandTotal = total + shippingCost;
 
   const tracked = useRef(false);
@@ -34,9 +33,21 @@ export default function CheckoutPage() {
     }
   }, [items, grandTotal]);
 
+  const paymentsLiveEnabled = process.env.NEXT_PUBLIC_PAYMENTS_LIVE_ENABLED === "true";
   const paypalClientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "";
+  const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "";
+  const stripeConfigured = paymentsLiveEnabled && stripePublishableKey.startsWith("pk_live_");
+  const paypalConfigured = paymentsLiveEnabled && Boolean(paypalClientId);
+
+  useEffect(() => {
+    if (!stripeConfigured && paypalConfigured) setPaymentMethod("paypal");
+  }, [stripeConfigured, paypalConfigured]);
 
   const handleStripeCheckout = async () => {
+    if (!stripeConfigured) {
+      setError("Kartenzahlung ist noch nicht im Live-Modus freigeschaltet.");
+      return;
+    }
     setLoading(true);
     setError(null);
 
@@ -47,11 +58,9 @@ export default function CheckoutPage() {
         body: JSON.stringify({
           items: items.map((item) => ({
             id: item.product.id,
-            title: item.product.title,
-            price: item.product.price,
             quantity: item.quantity,
-            image: item.product.images[0],
           })),
+          country,
         }),
       });
 
@@ -80,12 +89,11 @@ export default function CheckoutPage() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        items: items.map((item) => ({
-          id: item.product.id,
-          title: item.product.title,
-          price: item.product.price,
-          quantity: item.quantity,
-        })),
+          items: items.map((item) => ({
+            id: item.product.id,
+            quantity: item.quantity,
+          })),
+          country,
       }),
     });
 
@@ -130,7 +138,7 @@ export default function CheckoutPage() {
   const stripeButton = (
     <button
       onClick={handleStripeCheckout}
-      disabled={loading}
+      disabled={loading || !stripeConfigured}
       className="btn-accent w-full py-4 text-base disabled:opacity-50 disabled:cursor-not-allowed"
     >
       {loading ? (
@@ -142,7 +150,7 @@ export default function CheckoutPage() {
           Wird verarbeitet...
         </span>
       ) : (
-        `Jetzt sicher bezahlen \u2013 ${grandTotal.toFixed(2)}\u00a0\u20ac`
+        `Weiter zu Stripe \u2013 ${grandTotal.toFixed(2)}\u00a0\u20ac`
       )}
     </button>
   );
@@ -190,6 +198,14 @@ export default function CheckoutPage() {
         Kasse
       </h1>
 
+      <div className="glass-card p-6 mb-6">
+        <label htmlFor="shipping-country" className="block text-sm font-semibold text-gray-900 mb-2">Lieferland</label>
+        <select id="shipping-country" value={country} onChange={(event) => setCountry(event.target.value as ShippingCountry)} className="w-full rounded-lg border border-gray-300 bg-white p-3 text-sm">
+          <option value="DE">Deutschland – 4,99 € Versand</option>
+          <option value="FR">Frankreich – 6,99 € Versand</option>
+        </select>
+      </div>
+
       {/* Order Summary */}
       <div className="glass-card p-6 mb-6">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Deine Bestellung</h2>
@@ -219,11 +235,7 @@ export default function CheckoutPage() {
           <div className="flex justify-between text-gray-500">
             <span>Versand</span>
             <span>
-              {shippingCost === 0 ? (
-                <span className="text-green-600 font-medium">Kostenlos</span>
-              ) : (
-                `${shippingCost.toFixed(2)} \u20ac`
-              )}
+              {shippingCost.toFixed(2)} €
             </span>
           </div>
           <div className="flex justify-between font-bold text-gray-900 text-base pt-2 border-t border-gray-200">
@@ -240,10 +252,11 @@ export default function CheckoutPage() {
         <div className="grid grid-cols-2 gap-3">
           <button
             onClick={() => setPaymentMethod("stripe")}
+            disabled={!stripeConfigured}
             className={`p-4 rounded-xl border-2 transition-all text-left ${
               paymentMethod === "stripe"
                 ? "border-brand-500 bg-brand-50"
-                : "border-gray-200 bg-gray-100 hover:border-gray-300"
+                : "border-gray-200 bg-gray-100 hover:border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
             }`}
           >
             <div className="flex items-center gap-3">
@@ -261,10 +274,11 @@ export default function CheckoutPage() {
 
           <button
             onClick={() => setPaymentMethod("paypal")}
+            disabled={!paypalConfigured}
             className={`p-4 rounded-xl border-2 transition-all text-left ${
               paymentMethod === "paypal"
                 ? "border-[#0070ba] bg-[#0070ba]/10"
-                : "border-gray-200 bg-gray-100 hover:border-gray-300"
+                : "border-gray-200 bg-gray-100 hover:border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
             }`}
           >
             <div className="flex items-center gap-3">
@@ -275,7 +289,7 @@ export default function CheckoutPage() {
               </div>
               <div>
                 <p className="font-semibold text-gray-700 text-sm">PayPal</p>
-                <p className="text-xs text-gray-500">Auch Lastschrift &amp; Rechnung</p>
+                <p className="text-xs text-gray-500">PayPal-Zahlung</p>
               </div>
             </div>
           </button>
@@ -300,7 +314,7 @@ export default function CheckoutPage() {
           <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0H6.375c-.621 0-1.125-.504-1.125-1.125V14.25m17.25 0V5.625A1.125 1.125 0 0021.75 4.5H2.25A1.125 1.125 0 001.125 5.625v8.625" />
           </svg>
-          <span className="text-xs text-gray-500">Schneller Versand</span>
+          <span className="text-xs text-gray-500">Versandstatus per E-Mail</span>
         </div>
       </div>
 
@@ -312,7 +326,7 @@ export default function CheckoutPage() {
       )}
 
       {/* Payment Buttons - PayPalScriptProvider always mounted to prevent SDK reload */}
-      {paypalClientId ? (
+      {paypalConfigured ? (
         <PayPalScriptProvider
           options={{
             clientId: paypalClientId,
@@ -364,14 +378,14 @@ export default function CheckoutPage() {
 
       {/* Guarantee note */}
       <p className="text-center text-xs text-gray-500 mt-4">
-        30 Tage Geld-zur&uuml;ck-Garantie &ndash; kein Risiko
+        Gesetzliches Widerrufsrecht und freiwillige 30-Tage-Rückgabe. Trendware trägt die unmittelbaren Rücksendekosten.
       </p>
 
       <p className="text-center text-xs text-gray-500 mt-2">
-        Mit dem Kauf akzeptierst du unsere{" "}
+        Vor der Zahlung gelten unsere{" "}
         <Link href="/agb" className="underline hover:text-gray-700">AGB</Link>{" "}
         und{" "}
-        <Link href="/widerruf" className="underline hover:text-gray-700">Widerrufsbelehrung</Link>.
+        <Link href="/widerruf" className="underline hover:text-gray-700">Widerrufsbelehrung</Link>, unsere <Link href="/versand" className="underline hover:text-gray-700">Versandinformationen</Link> und die produktspezifischen Sicherheitsangaben.
       </p>
     </div>
   );

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getStripe } from "@/lib/stripe";
+import { getAllProducts } from "@/data/product-store";
+import { isProductOrderable } from "@/lib/product-compliance";
 
 /*
  * =============================================================
@@ -19,23 +21,18 @@ import { getStripe } from "@/lib/stripe";
  * =============================================================
  */
 
-const SHIPPING_THRESHOLD_CENTS = 3900; // 39 EUR
-const SHIPPING_COST_CENTS = 499; // 4.99 EUR
-
 interface CheckoutItem {
   id: string;
-  title: string;
-  price: number;
   quantity: number;
-  image?: string;
 }
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const items: CheckoutItem[] = body.items;
+    const requestedItems: CheckoutItem[] = body.items;
+    const country = body.country === "FR" ? "FR" : body.country === "DE" ? "DE" : null;
 
-    if (!items || items.length === 0) {
+    if (!requestedItems || requestedItems.length === 0 || !country) {
       return NextResponse.json(
         { error: "Keine Artikel im Warenkorb." },
         { status: 400 }
@@ -43,7 +40,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if Stripe is configured
-    if (!process.env.STRIPE_SECRET_KEY) {
+    if (
+      process.env.PAYMENTS_LIVE_ENABLED !== "true" ||
+      !process.env.STRIPE_SECRET_KEY?.startsWith("sk_live_")
+    ) {
       return NextResponse.json(
         {
           error:
@@ -53,47 +53,28 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const subtotalCents = items.reduce(
-      (sum, item) => sum + Math.round(item.price * 100) * item.quantity,
-      0
-    );
-
-    const shippingOptions =
-      subtotalCents >= SHIPPING_THRESHOLD_CENTS
-        ? [
-            {
-              shipping_rate_data: {
-                type: "fixed_amount" as const,
-                fixed_amount: { amount: 0, currency: "eur" },
-                display_name: "Kostenloser Versand",
-                delivery_estimate: {
-                  minimum: { unit: "business_day" as const, value: 3 },
-                  maximum: { unit: "business_day" as const, value: 7 },
-                },
-              },
-            },
-          ]
-        : [
-            {
-              shipping_rate_data: {
-                type: "fixed_amount" as const,
-                fixed_amount: { amount: SHIPPING_COST_CENTS, currency: "eur" },
-                display_name: "Standardversand",
-                delivery_estimate: {
-                  minimum: { unit: "business_day" as const, value: 3 },
-                  maximum: { unit: "business_day" as const, value: 7 },
-                },
-              },
-            },
-          ];
+    const products = await getAllProducts();
+    const productById = new Map(products.map((product) => [product.id, product]));
+    const items = requestedItems.map((item) => ({ product: productById.get(item.id), quantity: item.quantity }));
+    if (items.some(({ product, quantity }) => !product || !isProductOrderable(product) || !Number.isInteger(quantity) || quantity < 1 || quantity > 10)) {
+      return NextResponse.json({ error: "Mindestens ein Produkt ist aktuell nicht bestellbar oder die Menge ist ungültig." }, { status: 409 });
+    }
+    const shippingCostCents = country === "FR" ? 699 : 499;
+    const shippingOptions = [{
+      shipping_rate_data: {
+        type: "fixed_amount" as const,
+        fixed_amount: { amount: shippingCostCents, currency: "eur" },
+        display_name: "Standardversand",
+      },
+    }];
 
     // Derive base URL from request headers (works on Vercel and locally)
     const host = request.headers.get("host") || "localhost:3000";
     const protocol = request.headers.get("x-forwarded-proto") || "https";
-    const baseUrl = `${protocol}://${host}`;
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `${protocol}://${host}`;
 
     // Encode product IDs + quantities as metadata for fulfillment
-    const itemsMeta = items.map((item) => ({ id: item.id, qty: item.quantity }));
+    const itemsMeta = items.map((item) => ({ id: item.product!.id, qty: item.quantity }));
 
     const session = await getStripe().checkout.sessions.create({
       mode: "payment",
@@ -102,10 +83,10 @@ export async function POST(request: NextRequest) {
         price_data: {
           currency: "eur",
           product_data: {
-            name: item.title,
-            images: item.image ? [item.image] : [],
+            name: item.product!.title,
+            images: item.product!.images[0] ? [item.product!.images[0]] : [],
           },
-          unit_amount: Math.round(item.price * 100),
+          unit_amount: Math.round(item.product!.price * 100),
         },
         quantity: item.quantity,
       })),
@@ -115,7 +96,7 @@ export async function POST(request: NextRequest) {
       phone_number_collection: { enabled: true },
       shipping_options: shippingOptions,
       shipping_address_collection: {
-        allowed_countries: ["DE", "AT", "CH"],
+        allowed_countries: [country],
       },
       billing_address_collection: "required",
       allow_promotion_codes: true,

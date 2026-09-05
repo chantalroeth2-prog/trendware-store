@@ -10,8 +10,8 @@ import {
 import { getBestsellers, getNewArrivals } from "@/data/product-store";
 import type { Product } from "@/data/product-store";
 
-const FROM_EMAIL = "TrendWare <noreply@trendware.store>";
-const SITE_URL = "https://trendware.store";
+const FROM_EMAIL = process.env.EMAIL_FROM || "TrendWare <onboarding@resend.dev>";
+const SITE_URL = "https://trendware7.store";
 
 // ── Helpers ──
 
@@ -143,25 +143,24 @@ function wrapEmail(options: {
   `.trim();
 }
 
-// ── Sequence Step 2 (Day 2): Bestseller Showcase ──
+// ── Sequence Step 2 (Day 2): verified-review showcase ──
 
 function buildDay2Email(products: Product[]): { subject: string; html: string } {
   const top4 = products.slice(0, 4);
   return {
-    subject: "Hast du unsere Bestseller schon gesehen?",
+    subject: "Produkte mit verifizierten Bewertungen",
     html: wrapEmail({
-      headline: "Unsere Bestseller warten auf dich!",
-      subtitle: "Die beliebtesten Produkte unserer Community",
+      headline: "Von Kundinnen und Kunden bewertet",
+      subtitle: "Ausschließlich verifizierte Bewertungen aus unserem Shop",
       bodyHtml: `
         <p style="color:#555;line-height:1.6;margin:0 0 16px">
-          Tausende Kunden lieben diese Produkte – und wir sind sicher, dass auch für dich etwas dabei ist.
-          Hier sind unsere meistverkauften Highlights:
+          Zu diesen Produkten liegen verifizierte Bewertungen aus unserem Shop vor:
         </p>
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">
           ${buildProductRows(top4)}
         </table>
       `,
-      ctaText: "Alle Bestseller entdecken",
+      ctaText: "Produkte entdecken",
       ctaUrl: `${SITE_URL}/shop`,
     }),
   };
@@ -243,7 +242,7 @@ function buildDay20Email(products: Product[]): { subject: string; html: string }
           <p style="color:#16a34a;margin:12px 0 0;font-size:14px;font-weight:600">15% Rabatt auf deine gesamte Bestellung!</p>
         </div>
         <p style="color:#555;line-height:1.6;margin:0 0 16px">
-          Hier sind einige unserer beliebtesten Produkte, die auf dich warten:
+          Hier sind einige Produkte mit verifizierten Bewertungen:
         </p>
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">
           ${buildProductRows(top4)}
@@ -329,6 +328,10 @@ export async function GET(request: NextRequest) {
       getBestsellers(),
       getNewArrivals(),
     ]);
+
+    if (bestsellers.length === 0) {
+      return NextResponse.json({ success: true, message: "Bewertungsautomation pausiert: keine verifizierten Shop-Bewertungen vorhanden.", processed: 0, sent: 0, skipped: subscribers.length });
+    }
 
     if (subscribers.length === 0) {
       return NextResponse.json({

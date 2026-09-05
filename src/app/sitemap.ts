@@ -3,7 +3,7 @@ import { getAllProducts } from "@/data/product-store";
 import { categories } from "@/data/products";
 import { getBlogPosts } from "@/lib/kv";
 
-const BASE_URL = "https://trendware.store";
+const BASE_URL = "https://trendware7.store";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [products, blogPosts] = await Promise.all([
